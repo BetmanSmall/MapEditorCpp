@@ -1,11 +1,15 @@
-#ifndef MAPTILESETS_H
-#define MAPTILESETS_H
+#ifndef TILESETS_H
+#define TILESETS_H
 
+#include <QVector>
 
-class MapTileSets
-{
+#include "tileset.h"
+
+class TileSets {
 public:
-    MapTileSets();
+    QVector<TileSet> tileSets;
+public:
+    TileSets();
 };
 
-#endif // MAPTILESETS_H
+#endif // TILESETS_H

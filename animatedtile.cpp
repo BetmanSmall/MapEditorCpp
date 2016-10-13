@@ -1,7 +1,6 @@
 #include "animatedtile.h"
 
-AnimatedTile::AnimatedTile()
-{
+AnimatedTile::AnimatedTile() {
 
 }
 

@@ -2,8 +2,7 @@
 #define ANIMATEDTILE_H
 
 
-class AnimatedTile
-{
+class AnimatedTile {
 public:
     AnimatedTile();
 };

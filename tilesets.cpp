@@ -1,7 +1,5 @@
-#include "maptilesets.h"
+#include "tilesets.h"
 
-MapTileSets::MapTileSets()
-{
+TileSets::TileSets() {
 
 }
-

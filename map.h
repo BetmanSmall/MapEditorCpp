@@ -1,11 +1,22 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <QDebug>
 
-class Map
-{
+#include "tilesets.h"
+
+class Map {
+public:
+    QString mapPath;
+    TileSets tileSets;
+    QMap<QString, QString> properties;
+
 public:
     Map();
+    QMap<QString, QString> *getProperties();
+//    void loadMap(QString fileName);
+//    QString findFile(QString filePath);
+private:
 };
 
 #endif // MAP_H
