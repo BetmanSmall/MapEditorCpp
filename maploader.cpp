@@ -211,6 +211,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
                 tileheight = tileSetElement.attribute("tileheight", "0").toInt();
                 spacing = tileSetElement.attribute("spacing", "0").toInt();
                 margin = tileSetElement.attribute("margin", "0").toInt();
+
                 QDomElement offsetElement = tileSetElement.firstChildElement("tileoffset");
                 if (!offsetElement.isNull()) {
                     offsetX = offsetElement.attribute("x", "0").toInt();
@@ -264,7 +265,9 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
             for (int y = margin; y <= stopHeight; y += tileheight + spacing) {
                 for (int x = margin; x <= stopWidth; x += tilewidth + spacing) {
                     QPixmap tilePix = texture.copy(x, y, tilewidth, tileheight);
-                    Tile tile(tilePix);
+                    StaticTile tile(tilePix);
+//                    Tile *tile2 = tile;
+//                    Tile tile2 = *tile;
                     tile.setId(id);
                     tile.setOffsetX(offsetX);
                     tile.setOffsetY(flipY ? -offsetY : offsetY);
@@ -284,61 +287,62 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
                 }
                 QPixmap texture = textures.value(imagePath);
 //                TextureRegion texture = imageResolver.getImage(imagePath.path());
-                Tile tile(texture);
+                StaticTile tile(texture);
                 tile.setId(firstgid + tileNode.toElement().attribute("id").toInt());
                 tile.setOffsetX(offsetX);
                 tile.setOffsetY(flipY ? -offsetY : offsetY);
                 tileset.putTile(tile.getId(), tile);
             }
         }
-        QVector<AnimatedTile> animatedTiles;
 
+        QVector<AnimatedTile> animatedTiles;
         QDomNodeList tilesNodeList = tileSetElement.elementsByTagName("tile");
         for(int k = 0; k < tilesNodeList.length(); k++) {
             QDomElement tileElement = tilesNodeList.item(k).toElement();
             int localtid = tileElement.attribute("id", "0").toInt();
-            Tile tile = tileset.getTile(firstgid + localtid);
-            if (tile != null) {
-                Element animationElement = tileElement.getChildByName("animation");
-                if (animationElement != null) {
-
-                    Array<StaticTiledMapTile> staticTiles = new Array<StaticTiledMapTile>();
-                    IntArray intervals = new IntArray();
-                    for (Element frameElement : animationElement.getChildrenByName("frame")) {
-                        staticTiles.add((StaticTiledMapTile) tileset.getTile(firstgid + frameElement.attribute("tileid")));
-                        intervals.add(frameElement.attribute("duration"));
+            Tile *tile = tileset.getTile(firstgid + localtid);
+            if (tile != NULL) {
+                QDomElement animationElement = tileElement.firstChildElement("animation");
+                if (!animationElement.isNull()) {
+                    QVector<StaticTile*> staticTiles;
+                    QVector<int> intervals;
+                    QDomNodeList framesNodeList = animationElement.elementsByTagName("frame");
+                    for (int f = 0; f < framesNodeList.length(); f++) {
+                        QDomElement frameElement = framesNodeList.item(f).toElement();
+                        staticTiles.append((StaticTile*) tileset.getTile(firstgid + frameElement.attribute("tileid").toInt()));
+                        intervals.append(frameElement.attribute("duration").toInt());
                     }
 
-                    AnimatedTiledMapTile animatedTile = new AnimatedTiledMapTile(intervals, staticTiles);
-                    animatedTile.setId(tile.getId());
-                    animatedTiles.add(animatedTile);
-                    tile = animatedTile;
+                    AnimatedTile animatedTile(intervals, staticTiles);
+                    animatedTile.setId(tile->getId());
+                    animatedTiles.append(animatedTile);
+                    *tile = animatedTile;
                 }
 
-                String terrain = tileElement.attribute("terrain", null);
-                if (terrain != null) {
-                    tile.getProperties().put("terrain", terrain);
+                QString terrain = tileElement.attribute("terrain", "");
+                if (terrain != "") {
+                    tile->getProperties()->insert("terrain", terrain);
                 }
-                String probability = tileElement.attribute("probability", null);
-                if (probability != null) {
-                    tile.getProperties().put("probability", probability);
+                QString probability = tileElement.attribute("probability", "");
+                if (probability != "") {
+                    tile->getProperties()->insert("probability", probability);
                 }
-                Element properties = tileElement.getChildByName("properties");
-                if (properties != null) {
-                    loadProperties(tile.getProperties(), properties);
+                QDomElement properties = tileElement.firstChildElement("properties");
+                if (!properties.isNull()) {
+                    loadProperties(tile->getProperties(), properties);
                 }
             }
         }
 
-        for (AnimatedTiledMapTile tile : animatedTiles) {
+        foreach (AnimatedTile tile, animatedTiles) {
             tileset.putTile(tile.getId(), tile);
         }
 
-        Element properties = element.getChildByName("properties");
-        if (properties != null) {
+        QDomElement properties = tileSetElement.firstChildElement("properties");
+        if (!properties.isNull()) {
             loadProperties(tileset.getProperties(), properties);
         }
-        map.getTileSets().addTileSet(tileset);
+        map->getTileSets().addTileSet(tileset);
     }
 }
 

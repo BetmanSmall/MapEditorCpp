@@ -1,5 +1,9 @@
 #include "tileset.h"
 
+TileSet::TileSet() {
+
+}
+
 TileSet::TileSet(QString name) {
     this->name = name;
 }
@@ -18,4 +22,8 @@ QMap<QString, QString> *TileSet::getProperties() {
 
 void TileSet::putTile(int id, Tile tile) {
     tiles.insert(id, tile);
+}
+
+Tile *TileSet::getTile(int id) {
+    return &(tiles.take(id));
 }

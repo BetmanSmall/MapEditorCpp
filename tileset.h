@@ -10,12 +10,13 @@ class TileSet {
     QMap<int, Tile> tiles;
     QMap<QString, QString> properties;
 public:
+    TileSet();
     TileSet(QString name);
     void setName(QString name);
     QString getName();
     QMap<QString, QString> *getProperties();
     void putTile(int id, Tile tile);
-    Tile *
+    Tile *getTile(int id);
 };
 
 #endif // TILESET_H

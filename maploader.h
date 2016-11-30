@@ -7,6 +7,7 @@
 #include <QPixmap>
 
 #include "map.h"
+#include "tile.h"
 
 class MapLoader {
     int mapTileWidth;
