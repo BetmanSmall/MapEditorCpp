@@ -25,5 +25,5 @@ void TileSet::putTile(int id, Tile tile) {
 }
 
 Tile *TileSet::getTile(int id) {
-    return &(tiles.take(id));
+    return &(tiles[id]);
 }

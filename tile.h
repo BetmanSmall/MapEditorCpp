@@ -5,7 +5,8 @@
 #include <QMap>
 
 class Tile {
-//    int id;
+protected:
+    int id;
     QPixmap pixmap;
     QMap<QString, QString> properties;
     float offsetX;
@@ -21,38 +22,38 @@ public:
         NONE, ALPHA
     };
 
-    int getId();
+    virtual int getId() = 0;
 
-    void setId(int id);
+    virtual void setId(int id) = 0;
 
     /** @return the {@link BlendMode} to use for rendering the tile */
-    BlendMode getBlendMode();
+    virtual BlendMode getBlendMode() = 0;
 
     /** Sets the {@link BlendMode} to use for rendering the tile
      *
      * @param blendMode the blend mode to use for rendering the tile */
-    void setBlendMode(BlendMode blendMode);
+    virtual void setBlendMode(BlendMode blendMode) = 0;
 
     /** @return texture region used to render the tile */
-    QPixmap getPixmap();
+    virtual QPixmap getPixmap() = 0;
 
     /** Sets the texture region used to render the tile */
-    void setPixmap(QPixmap pixmap);
+    virtual void setPixmap(QPixmap pixmap) = 0;
 
     /** @return the amount to offset the x position when rendering the tile */
-    float getOffsetX();
+    virtual float getOffsetX() = 0;
 
     /** Set the amount to offset the x position when rendering the tile */
-    void setOffsetX(float offsetX);
+    virtual void setOffsetX(float offsetX) = 0;
 
     /** @return the amount to offset the y position when rendering the tile */
-    float getOffsetY();
+    virtual float getOffsetY() = 0;
 
     /** Set the amount to offset the y position when rendering the tile */
-    void setOffsetY(float offsetY);
+    virtual void setOffsetY(float offsetY) = 0;
 
     /** @return tile's properties set */
-    QMap<QString, QString> *getProperties();
+    virtual QMap<QString, QString> *getProperties() = 0;
 };
 
 #endif // TILE_H

@@ -4,7 +4,7 @@
 #include "tile.h"
 
 class StaticTile : public Tile {
-    int id;
+//    int id;
     BlendMode blendMode;// = BlendMode::ALPHA;
 //    QMap<QString, QString> properties;
     QPixmap pixmap;

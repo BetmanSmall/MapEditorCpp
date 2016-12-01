@@ -8,7 +8,7 @@ int StaticTile::getId() {
 }
 
 void StaticTile::setId(int id) {
-    this.id = id;
+    this->id = id;
 }
 
 StaticTile::BlendMode StaticTile::getBlendMode() {
@@ -16,7 +16,7 @@ StaticTile::BlendMode StaticTile::getBlendMode() {
 }
 
 void StaticTile::setBlendMode(BlendMode blendMode) {
-    this.blendMode = blendMode;
+    this->blendMode = blendMode;
 }
 
 QMap<QString, QString> *StaticTile::getProperties() {
@@ -26,12 +26,12 @@ QMap<QString, QString> *StaticTile::getProperties() {
     return &properties;
 }
 
-QPixmap StaticTile::getQPixmap() {
+QPixmap StaticTile::getPixmap() {
     return pixmap;
 }
 
 void StaticTile::setPixmap(QPixmap pixmap) {
-    this.pixmap = pixmap;
+    this->pixmap = pixmap;
 }
 
 float StaticTile::getOffsetX() {
@@ -39,7 +39,7 @@ float StaticTile::getOffsetX() {
 }
 
 void StaticTile::setOffsetX(float offsetX) {
-    this.offsetX = offsetX;
+    this->offsetX = offsetX;
 }
 
 float StaticTile::getOffsetY() {
@@ -47,7 +47,7 @@ float StaticTile::getOffsetY() {
 }
 
 void StaticTile::setOffsetY(float offsetY) {
-    this.offsetY = offsetY;
+    this->offsetY = offsetY;
 }
 
 /** Creates a static tile with the given region

@@ -29,9 +29,9 @@ public:
 
     int getCurrentFrameIndex();
 
-    Tile getCurrentFrame();
+    Tile *getCurrentFrame();
 
-    QPixmap getPixmap;
+    QPixmap getPixmap();
 
     void setPixmap(QPixmap pixmap);
 
