@@ -1,30 +1,30 @@
 #include "statictile.h"
 
-StaticTile::StaticTile() {
-}
+//StaticTile::StaticTile() {
+//}
 
-int StaticTile::getId() {
-    return id;
-}
+//int StaticTile::getId() {
+//    return id;
+//}
 
-void StaticTile::setId(int id) {
-    this->id = id;
-}
+//void StaticTile::setId(int id) {
+//    this->id = id;
+//}
 
-StaticTile::BlendMode StaticTile::getBlendMode() {
-    return blendMode;
-}
+//StaticTile::BlendMode StaticTile::getBlendMode() {
+//    return blendMode;
+//}
 
-void StaticTile::setBlendMode(BlendMode blendMode) {
-    this->blendMode = blendMode;
-}
+//void StaticTile::setBlendMode(BlendMode blendMode) {
+//    this->blendMode = blendMode;
+//}
 
-QMap<QString, QString> *StaticTile::getProperties() {
-//    if (properties == NULL) {
-//        properties = new QMap<QString, QString>();
-//    }
-    return &properties;
-}
+//QMap<QString, QString> *StaticTile::getProperties() {
+////    if (properties == NULL) {
+////        properties = new QMap<QString, QString>();
+////    }
+//    return &properties;
+//}
 
 QPixmap StaticTile::getPixmap() {
     return pixmap;

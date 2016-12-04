@@ -25,6 +25,7 @@ Map* MapLoader::load(QString mapPath) {
     }
 
     Map *map = loadMap(mapElement, mapPath, textures);
+    return map;
 }
 
 QDomDocument *MapLoader::loadDomDocument(QString xmlFile) {
@@ -164,6 +165,19 @@ Map *MapLoader::loadMap(QDomElement mapElement, QString mapPath, QMap<QString, Q
         QDomNode tileSetNode = tileSetsNodeList.item(k);
         loadTileSet(map, tileSetNode.toElement(), mapPath, textures);
     }
+//    for (int i = 0, j = root.getChildCount(); i < j; i++) {
+//        Element element = root.getChild(i);
+//        String name = element.getName();
+//        if (name.equals("layer")) {
+//            loadTileLayer(map, element);
+//        } else if (name.equals("objectgroup")) {
+//            loadObjectGroup(map, element);
+//        }
+//        else if (name.equals("imagelayer")) {
+//            loadImageLayer(map, element, tmxFile, imageResolver);
+//        }
+//    }
+    return map;
 }
 
 
@@ -193,6 +207,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
         int tileheight = tileSetElement.attribute("tileheight", "0").toInt();
         int spacing = tileSetElement.attribute("spacing", "0").toInt();
         int margin = tileSetElement.attribute("margin", "0").toInt();
+        int columns = tileSetElement.attribute("columns", "0").toInt();
         QString source = tileSetElement.attribute("source", NULL);
 
         int offsetX = 0;
@@ -206,11 +221,12 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
             QString tsx = findFile(mapPath, source);
 //            try {
                 tileSetElement = loadDomDocument(tsx)->documentElement();
-                name = tileSetElement.attribute("name", NULL);
+                name = tileSetElement.attribute("name", name);
                 tilewidth = tileSetElement.attribute("tilewidth", "0").toInt();
                 tileheight = tileSetElement.attribute("tileheight", "0").toInt();
                 spacing = tileSetElement.attribute("spacing", "0").toInt();
                 margin = tileSetElement.attribute("margin", "0").toInt();
+                columns = tileSetElement.attribute("columns", "0").toInt();
 
                 QDomElement offsetElement = tileSetElement.firstChildElement("tileoffset");
                 if (!offsetElement.isNull()) {
@@ -256,6 +272,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
             props->insert("tileheight", QString::number(tileheight));
             props->insert("margin", QString::number(margin));
             props->insert("spacing", QString::number(spacing));
+            props->insert("columns", QString::number(columns));
 
             int stopWidth = texture.width() - tilewidth;
             int stopHeight = texture.height() - tileheight;
@@ -265,12 +282,10 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
             for (int y = margin; y <= stopHeight; y += tileheight + spacing) {
                 for (int x = margin; x <= stopWidth; x += tilewidth + spacing) {
                     QPixmap tilePix = texture.copy(x, y, tilewidth, tileheight);
-                    StaticTile tile(tilePix);
-//                    Tile *tile2 = tile;
-//                    Tile tile2 = *tile;
-                    tile.setId(id);
-                    tile.setOffsetX(offsetX);
-                    tile.setOffsetY(flipY ? -offsetY : offsetY);
+                    StaticTile *tile = new StaticTile(tilePix);
+                    tile->setId(id);
+                    tile->setOffsetX(offsetX);
+                    tile->setOffsetY(flipY ? -offsetY : offsetY);
                     tileset.putTile(id++, tile);
                 }
             }
@@ -286,16 +301,15 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
                     imagePath = findFile(mapPath, imageSource);
                 }
                 QPixmap texture = textures.value(imagePath);
-//                TextureRegion texture = imageResolver.getImage(imagePath.path());
-                StaticTile tile(texture);
-                tile.setId(firstgid + tileNode.toElement().attribute("id").toInt());
-                tile.setOffsetX(offsetX);
-                tile.setOffsetY(flipY ? -offsetY : offsetY);
-                tileset.putTile(tile.getId(), tile);
+                StaticTile *tile = new StaticTile(texture);
+                tile->setId(firstgid + tileNode.toElement().attribute("id").toInt());
+                tile->setOffsetX(offsetX);
+                tile->setOffsetY(flipY ? -offsetY : offsetY);
+                tileset.putTile(tile->getId(), tile);
             }
         }
 
-        QVector<AnimatedTile> animatedTiles;
+        QVector<AnimatedTile*> animatedTiles;
         QDomNodeList tilesNodeList = tileSetElement.elementsByTagName("tile");
         for(int k = 0; k < tilesNodeList.length(); k++) {
             QDomElement tileElement = tilesNodeList.item(k).toElement();
@@ -313,10 +327,10 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
                         intervals.append(frameElement.attribute("duration").toInt());
                     }
 
-                    AnimatedTile animatedTile(intervals, staticTiles);
-                    animatedTile.setId(tile->getId());
+                    AnimatedTile *animatedTile = new AnimatedTile(intervals, staticTiles);
+                    animatedTile->setId(tile->getId());
                     animatedTiles.append(animatedTile);
-                    *tile = animatedTile;
+                    tile = animatedTile;
                 }
 
                 QString terrain = tileElement.attribute("terrain", "");
@@ -334,15 +348,15 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
             }
         }
 
-        foreach (AnimatedTile tile, animatedTiles) {
-            tileset.putTile(tile.getId(), tile);
+        foreach (AnimatedTile *tile, animatedTiles) {
+            tileset.putTile(tile->getId(), tile);
         }
 
         QDomElement properties = tileSetElement.firstChildElement("properties");
         if (!properties.isNull()) {
             loadProperties(tileset.getProperties(), properties);
         }
-        map->getTileSets().addTileSet(tileset);
+        map->getTileSets()->addTileSet(tileset);
     }
 }
 

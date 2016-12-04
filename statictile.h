@@ -5,32 +5,29 @@
 
 class StaticTile : public Tile {
 //    int id;
-    BlendMode blendMode;// = BlendMode::ALPHA;
+//    BlendMode blendMode;// = BlendMode::ALPHA;
 //    QMap<QString, QString> properties;
-    QPixmap pixmap;
-    float offsetX;
-    float offsetY;
+//    QPixmap pixmap;
+//    float offsetX;
+//    float offsetY;
 public:
-    StaticTile();
+//    StaticTile();
 
-    int getId();
-    void setId(int id);
+//    int getId();
+//    void setId(int id);
 
-    BlendMode getBlendMode();
-    void setBlendMode(BlendMode blendMode);
+//    BlendMode getBlendMode();
+//    void setBlendMode(BlendMode blendMode);
 
-    QMap<QString, QString> *getProperties();
+//    QMap<QString, QString> *getProperties();
 
     QPixmap getPixmap();
-
     void setPixmap(QPixmap pixmap);
 
     float getOffsetX();
-
     void setOffsetX(float offsetX);
 
     float getOffsetY();
-
     void setOffsetY(float offsetY);
 
     /** Creates a static tile with the given region

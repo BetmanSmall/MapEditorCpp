@@ -11,7 +11,7 @@ public:
 public:
     TileSets();
     void addTileSet(TileSet tileSet);
-    TileSet getTileSet(int index);
+    TileSet *getTileSet(int index);
 };
 
 #endif // TILESETS_H

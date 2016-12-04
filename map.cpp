@@ -8,8 +8,8 @@ QMap<QString, QString> *Map::getProperties() {
     return &properties;
 }
 
-TileSets Map::getTileSets() {
-    return tileSets;
+TileSets *Map::getTileSets() {
+    return &tileSets;
 }
 
 /*void Map::loadMap(QString filePath) {

@@ -5,9 +5,9 @@ TileSets::TileSets() {
 }
 
 void TileSets::addTileSet(TileSet tileSet) {
-//    this->tileSets.append(tileSet);
+    this->tileSets.append(tileSet);
 }
 
-TileSet TileSets::getTileSet(int index) {
-//    this->tileSets[index];
+TileSet *TileSets::getTileSet(int index) {
+    return &(tileSets[index]);
 }

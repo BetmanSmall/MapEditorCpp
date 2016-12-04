@@ -4,50 +4,43 @@
 #include "statictile.h"
 
 class AnimatedTile : public Tile {
-    long lastTiledMapRenderTime = 0;
-
 //    int id;
-    BlendMode blendMode;// = BlendMode.ALPHA;
-
+//    BlendMode blendMode;// = BlendMode.ALPHA;
 //    QMap<QString, QString> properties;
-    QVector<StaticTile*> frameTiles;
 
+    long lastTiledMapRenderTime = 0;
+    QVector<StaticTile*> frameTiles;
     QVector<int> animationIntervals;
+
     int frameCount = 0;
     int loopDuration;
     long initialTimeOffset;// = TimeUtils.millis();
 public:
-    AnimatedTile();
+//    AnimatedTile();
 
-    int getId();
+//    int getId();
+//    void setId(int id);
 
-    void setId(int id);
-
-    BlendMode getBlendMode();
-
-    void setBlendMode(BlendMode blendMode);
+//    BlendMode getBlendMode();
+//    void setBlendMode(BlendMode blendMode);
 
     int getCurrentFrameIndex();
 
-    Tile *getCurrentFrame();
+    StaticTile *getCurrentFrame();
 
     QPixmap getPixmap();
-
     void setPixmap(QPixmap pixmap);
 
     float getOffsetX();
-
     void setOffsetX(float offsetX);
 
     float getOffsetY();
-
     void setOffsetY(float offsetY);
 
     QVector<int> getAnimationIntervals();
-
     void setAnimationIntervals(QVector<int> intervals);
 
-    QMap<QString, QString> *getProperties();
+//    QMap<QString, QString> *getProperties();
 
     /** Function is called by BatchTiledMapRenderer render(), lastTiledMapRenderTime is used to keep all of the tiles in lock-step
      * animation and avoids having to call TimeUtils.millis() in getTextureRegion() */

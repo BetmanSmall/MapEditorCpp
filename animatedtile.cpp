@@ -3,26 +3,24 @@
 #include <QDebug>
 #include <QDateTime>
 
-AnimatedTile::AnimatedTile() {
-}
+//AnimatedTile::AnimatedTile() {
+//}
 
-int AnimatedTile::getId() {
-    return id;
-}
+//int AnimatedTile::getId() {
+//    return id;
+//}
 
+//void AnimatedTile::setId(int id) {
+//    this->id = id;
+//}
 
-void AnimatedTile::setId(int id) {
-    this->id = id;
-}
+//Tile::BlendMode AnimatedTile::getBlendMode() {
+//    return blendMode;
+//}
 
-Tile::BlendMode AnimatedTile::getBlendMode() {
-    return blendMode;
-}
-
-
-void AnimatedTile::setBlendMode(BlendMode blendMode) {
-    this->blendMode = blendMode;
-}
+//void AnimatedTile::setBlendMode(BlendMode blendMode) {
+//    this->blendMode = blendMode;
+//}
 
 int AnimatedTile::getCurrentFrameIndex() {
     int currentTime = (int)(lastTiledMapRenderTime % loopDuration);
@@ -32,42 +30,36 @@ int AnimatedTile::getCurrentFrameIndex() {
         if (currentTime <= animationInterval) return i;
         currentTime -= animationInterval;
     }
-
+    qCritical() << "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen.";
 //    throw new GdxRuntimeException(
 //        "Could not determine current animation frame in AnimatedTiledMapTile.  This should never happen.");
 }
 
-Tile *AnimatedTile::getCurrentFrame() {
+StaticTile *AnimatedTile::getCurrentFrame() {
     return frameTiles[getCurrentFrameIndex()];
 }
-
 
 QPixmap AnimatedTile::getPixmap() {
     return getCurrentFrame()->getPixmap();
 }
-
 
 void AnimatedTile::setPixmap(QPixmap pixmap) {
     qCritical() << "Cannot set the pixmap of AnimatedTile.";
 //    throw new GdxRuntimeException("Cannot set the texture region of AnimatedTiledMapTile.");
 }
 
-
 float AnimatedTile::getOffsetX() {
     return getCurrentFrame()->getOffsetX();
 }
-
 
 void AnimatedTile::setOffsetX(float offsetX) {
     qCritical() << "Cannot set offset of AnimatedTile.";
 //    throw new GdxRuntimeException("Cannot set offset of AnimatedTiledMapTile.");
 }
 
-
 float AnimatedTile::getOffsetY() {
     return getCurrentFrame()->getOffsetY();
 }
-
 
 void AnimatedTile::setOffsetY(float offsetY) {
     qCritical() << "Cannot set offset of AnimatedTile.";
@@ -93,13 +85,12 @@ void AnimatedTile::setAnimationIntervals(QVector<int> intervals) {
     }
 }
 
-
-QMap<QString, QString> *AnimatedTile::getProperties() {
-//    if (properties == null) {
-//        properties = new MapProperties();
-//    }
-    return &properties;
-}
+//QMap<QString, QString> *AnimatedTile::getProperties() {
+////    if (properties == null) {
+////        properties = new MapProperties();
+////    }
+//    return &properties;
+//}
 
 /** Function is called by BatchTiledMapRenderer render(), lastTiledMapRenderTime is used to keep all of the tiles in lock-step
  * animation and avoids having to call TimeUtils.millis() in getTextureRegion() */

@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     tilesets.cpp \
     tileset.cpp \
     animatedtile.cpp \
-    statictile.cpp
+    statictile.cpp \
+    tilesetwidget.cpp
 
 HEADERS  += mainwindow.h \
     map.h \
@@ -32,6 +33,7 @@ HEADERS  += mainwindow.h \
     tilesets.h \
     tileset.h \
     animatedtile.h \
-    statictile.h
+    statictile.h \
+    tilesetwidget.h
 
 FORMS    += mainwindow.ui

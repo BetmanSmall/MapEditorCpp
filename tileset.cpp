@@ -20,10 +20,16 @@ QMap<QString, QString> *TileSet::getProperties() {
     return &properties;
 }
 
-void TileSet::putTile(int id, Tile tile) {
+void TileSet::putTile(int id, Tile *tile) {
     tiles.insert(id, tile);
 }
 
 Tile *TileSet::getTile(int id) {
-    return &(tiles[id]);
+    int firshgid = properties.value("firstgid").toInt();
+    int delta = id - firshgid;
+    return tiles[delta];
+}
+
+QList<Tile*> TileSet::getTiles() {
+    return tiles.values();
 }
