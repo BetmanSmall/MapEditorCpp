@@ -2,7 +2,7 @@
 #define TILESSETWIDGET_H
 
 #include <QWidget>
-//#include <QTableWidget>
+#include <QTableWidget>
 //#include <QScrollArea>
 #include <QPaintEvent>
 #include <QPainter>

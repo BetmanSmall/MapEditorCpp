@@ -11,3 +11,8 @@ void TileSets::addTileSet(TileSet tileSet) {
 TileSet *TileSets::getTileSet(int index) {
     return &(tileSets[index]);
 }
+
+QList<TileSet> TileSets::getTileSets() {
+    return this->tileSets;
+}
+

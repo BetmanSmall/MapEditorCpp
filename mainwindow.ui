@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>910</width>
-    <height>537</height>
+    <width>1064</width>
+    <height>637</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,6 @@
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QTableWidget" name="tableWidget"/>
-      </item>
       <item>
        <spacer name="horizontalSpacer">
         <property name="orientation">
@@ -46,21 +43,13 @@
          <attribute name="title">
           <string>Tab 1</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QListView" name="listView"/>
-          </item>
-         </layout>
+         <layout class="QVBoxLayout" name="verticalLayout"/>
         </widget>
         <widget class="QWidget" name="tab_1">
          <attribute name="title">
           <string>Tab 2</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QTreeView" name="treeView"/>
-          </item>
-         </layout>
+         <layout class="QVBoxLayout" name="verticalLayout_2"/>
         </widget>
        </widget>
       </item>
@@ -73,7 +62,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>910</width>
+     <width>1064</width>
      <height>26</height>
     </rect>
    </property>

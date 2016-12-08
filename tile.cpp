@@ -20,7 +20,7 @@ void Tile::setPixmap(QPixmap pixmap) {
 }
 
 QPixmap Tile::getPixmap() {
-    qDebug() << "Tile::getPixmap(); --  pixmap:" << pixmap;
+//    qDebug() << "Tile::getPixmap(); --  pixmap:" << pixmap;
     return pixmap;
 }
 

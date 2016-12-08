@@ -7,11 +7,12 @@
 
 class TileSets {
 public:
-    QVector<TileSet> tileSets;
+    QList<TileSet> tileSets;
 public:
     TileSets();
     void addTileSet(TileSet tileSet);
     TileSet *getTileSet(int index);
+    QList<TileSet> getTileSets();
 };
 
 #endif // TILESETS_H

@@ -23,7 +23,8 @@ TileSetWidget::TileSetWidget(TileSet *tileSet) {
 //                QPixmap pixmap = staticTile->getPixmap();
 //                QTableWidgetItem *itemPixmap = new QTableWidgetItem(QIcon(pixmap), "x + + y");
 //                QTableWidgetItem *item = new QTableWidgetItem();
-//                item->setText("[eq]");
+//                item->setData(Qt::DecorationRole, pixmap);
+////                item->setText("[eq]");
 //                this->setItem(x, y, item);
 ////                qDebug() << "MainWindow::paintEvent(); -- p.drawPixmap(" << x*tileWidht << "," << y*tileHeight << "," << tileWidht << "," << tileHeight << "," << pixmap << ");";
 ////                qDebug() << "TileSetWidget::TileSetWidget(); -- setItem(" << x << "," << y << "," << itemPixmap << "," << pixmap << ");";
