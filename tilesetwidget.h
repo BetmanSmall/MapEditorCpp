@@ -11,16 +11,17 @@
 #include "statictile.h"
 #include "animatedtile.h"
 
-class TileSetWidget : public QWidget
-{
+class TileSetWidget : public QWidget {
     Q_OBJECT
     TileSet *tileSet;
+//    float scale;
 public:
 //    explicit TileSetWidget(QWidget *parent = 0);
     TileSetWidget(TileSet *tileSet);
-    void paintEvent(QPaintEvent *event);
-
     QString getTileSetName();
+
+    void paintEvent(QPaintEvent *event);
+    void wheelEvent(QWheelEvent *event);
 signals:
 
 public slots:
