@@ -6,11 +6,11 @@
 
 TileSetWidget::TileSetWidget(TileSet *tileSet) {
     this->tileSet = tileSet;
-    int tileWidht = tileSet->getProperties()->value("tilewidth").toInt();
-    int tileHeight = tileSet->getProperties()->value("tileheight").toInt();
-    int columns = tileSet->getProperties()->value("columns").toInt();
+    this->tileWidht = tileSet->getProperties()->value("tilewidth").toInt();
+    this->tileHeight = tileSet->getProperties()->value("tileheight").toInt();
+    this->columns = tileSet->getProperties()->value("columns").toInt();
+    scale = 1;
     setGeometry(QRect(0, 0, columns*tileWidht, (tileSet->getTiles().length()/columns)*tileHeight));
-//    scale = 1000;
 }
 
 QString TileSetWidget::getTileSetName() {
@@ -18,13 +18,10 @@ QString TileSetWidget::getTileSetName() {
 }
 
 void TileSetWidget::paintEvent(QPaintEvent *event) {
-    qDebug() << "TilesSetWidget::paintEvent(); -- scale:";
+    qDebug() << "TilesSetWidget::paintEvent(); -- scale:" << scale;
     QPainter p;
     p.begin(this);
 //    p.scale(scale, scale);
-    int tileWidht = tileSet->getProperties()->value("tilewidth").toInt();
-    int tileHeight = tileSet->getProperties()->value("tileheight").toInt();
-    int columns = tileSet->getProperties()->value("columns").toInt();
     QList<Tile*> tiles = tileSet->getTiles();
     for(int y = 0; y < tiles.length()/columns; y++) {
         for(int x = 0; x < columns; x++) {
@@ -33,7 +30,7 @@ void TileSetWidget::paintEvent(QPaintEvent *event) {
             StaticTile *staticTile = static_cast<StaticTile*>(tile);
             if(staticTile != NULL) {
                 QPixmap pixmap = staticTile->getPixmap();
-                p.drawPixmap(x*tileWidht, y*tileHeight, tileWidht, tileHeight, pixmap);
+                p.drawPixmap((int)(x*(tileWidht*scale)), (int)(y*(tileHeight*scale)), (int)(tileWidht*scale), (int)(tileHeight*scale), pixmap);
 //                qDebug() << "MainWindow::paintEvent(); -- p.drawPixmap(" << x*tileWidht << "," << y*tileHeight << "," << tileWidht << "," << tileHeight << "," << pixmap << ");";
             } else {
                 AnimatedTile *animatedTile = static_cast<AnimatedTile*>(tile);
@@ -47,6 +44,15 @@ void TileSetWidget::paintEvent(QPaintEvent *event) {
 }
 
 void TileSetWidget::wheelEvent(QWheelEvent *event) {
-    qDebug() << "TileSetWidget::wheelEvent(); -- event.delta():" << event->delta();
+//    qDebug() << "TileSetWidget::wheelEvent(); -- event.delta():" << event->delta();
 //    scale+=(event->delta()/120);
+    if(event->delta() > 0) {
+        if(scale < 5) {
+            scale += 0.1;
+        }
+    } else {
+        if(scale > 0.2)
+            scale -= 0.1;
+    }
+    repaint();
 }

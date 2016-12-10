@@ -14,7 +14,10 @@
 class TileSetWidget : public QWidget {
     Q_OBJECT
     TileSet *tileSet;
-//    float scale;
+    int tileWidht;
+    int tileHeight;
+    int columns;
+    float scale;
 public:
 //    explicit TileSetWidget(QWidget *parent = 0);
     TileSetWidget(TileSet *tileSet);
