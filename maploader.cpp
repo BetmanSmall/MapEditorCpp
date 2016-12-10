@@ -277,7 +277,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
             int stopWidth = texture.width() - tilewidth;
             int stopHeight = texture.height() - tileheight;
 
-            int id = firstgid;
+            int id = 0;
 
             for (int y = margin; y <= stopHeight; y += tileheight + spacing) {
                 for (int x = margin; x <= stopWidth; x += tilewidth + spacing) {

@@ -25,9 +25,9 @@ void TileSet::putTile(int id, Tile *tile) {
 }
 
 Tile *TileSet::getTile(int id) {
-    int firshgid = properties.value("firstgid").toInt();
-    int delta = id - firshgid;
-    return tiles[delta];
+//    int firshgid = properties.value("firstgid").toInt();
+//    int delta = id - firshgid;
+    return tiles[id];
 }
 
 QList<Tile*> TileSet::getTiles() {
