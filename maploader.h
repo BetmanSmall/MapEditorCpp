@@ -8,6 +8,7 @@
 
 #include "map.h"
 #include "tile.h"
+#include "layer.h"
 
 class MapLoader {
     int mapTileWidth;
@@ -28,6 +29,9 @@ private:
     void loadProperties(QMap<QString, QString> *properties, QDomElement propertiesElement);
     void loadTileSet(Map *map, QDomElement tileSetElement, QString mapPath, QMap<QString, QPixmap> textures);
     QString findFile(QString mapPath, QString filePath);
+    void loadTileLayer(Map map, QDomElement element);
+    void loadBasicLayerInfo(Layer *layer, QDomElement element);
+    int *getTileIds(QDomElement element, int width, int height);
 };
 
 #endif // MAPLOADER_H
