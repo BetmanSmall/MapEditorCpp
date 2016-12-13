@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLoadMap, SIGNAL(triggered(bool)), this, SLOT(loadMap()));
 
     MapLoader *mapLoader = new MapLoader();
-    this->map = mapLoader->load("C:/Qt/QtProjects/MapEditorCpp/maps/arena2.tmx");
+    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena2.tmx");
 
     ui->tabWidget->clear();
     TileSets *tileSets = map->getTileSets();
@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
         tileSetsDockWidget->addTileSet(tileSet);
     }
     addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
+
+    MapLayers *mapLayers = map->getMapLayers();
 }
 
 MainWindow::~MainWindow() {
@@ -41,7 +43,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     qDebug() << "MainWindow::paintEvent(" << event << ");";
 //    QPainter p;
 //    p.begin(this);
-//    qDebug() << "MainWindow::pa intEvent(); -- Test8";
+//    qDebug() << "MainWindow::paintEvent(); -- Test8";
 
 //    p.drawLine(0, 0, width(), height());
 //    p.end();

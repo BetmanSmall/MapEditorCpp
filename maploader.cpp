@@ -165,18 +165,18 @@ Map *MapLoader::loadMap(QDomElement mapElement, QString mapPath, QMap<QString, Q
         QDomNode tileSetNode = tileSetsNodeList.item(k);
         loadTileSet(map, tileSetNode.toElement(), mapPath, textures);
     }
-//    QDomNode node = mapElement.firstChild();
-//    while(!node.isNull()) {
-//        QString name = node.nodeName();
-//        if(name == "layer") {
-//            loadTileLayer(map, node.toElement());
-////        } else if (name == "objectgroup") {
-////            loadObjectGroup(map, node.toElement());
-////        } else if (name == "imagelayer") {
-////            loadImageLayer(map, node.toElement(), tmxFile, imageResolver);
-//        }
-//        node.nextSibling();
-//    }
+    QDomNode node = mapElement.firstChild();
+    while(!node.isNull()) {
+        QString name = node.nodeName();
+        if(name == "layer") {
+            loadTileLayer(map, node.toElement());
+//        } else if (name == "objectgroup") {
+//            loadObjectGroup(map, node.toElement());
+//        } else if (name == "imagelayer") {
+//            loadImageLayer(map, node.toElement(), tmxFile, imageResolver);
+        }
+        node = node.nextSibling();
+    }
     return map;
 }
 
@@ -380,18 +380,18 @@ QString MapLoader::findFile(QString mapPath, QString filePath) {
     return result;
 }
 
-void MapLoader::loadTileLayer(Map map, QDomElement element) {
+void MapLoader::loadTileLayer(Map *map, QDomElement element) {
     if (element.nodeName() == "layer") {
         int width = element.attribute("width", "0").toInt();
         int height = element.attribute("height", "0").toInt();
-        int tileWidth = map.getProperties()->value("tilewidth").toInt();
-        int tileHeight = map.getProperties()->value("tileheight").toInt();
+        int tileWidth = map->getProperties()->value("tilewidth").toInt();
+        int tileHeight = map->getProperties()->value("tileheight").toInt();
         Layer *layer = new Layer(width, height, tileWidth, tileHeight);
 
         loadBasicLayerInfo(layer, element);
 
         int *ids = getTileIds(element, width, height);
-        TileSets *tilesets = map.getTileSets();
+        TileSets *tilesets = map->getTileSets();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int id = ids[y * width + x];
@@ -412,7 +412,7 @@ void MapLoader::loadTileLayer(Map map, QDomElement element) {
         if (!properties.isNull()) {
             loadProperties(layer->getProperties(), properties);
         }
-        map.getMapLayers()->add(layer);
+        map->getMapLayers()->add(layer);
     }
 }
 
@@ -435,7 +435,7 @@ int *MapLoader::getTileIds(QDomElement element, int width, int height) {
     }
     int *ids = new int[width * height];
     if (encoding == "csv") {
-        QStringList array = data.nodeValue().split(",");
+        QStringList array = data.text().split(",");
         for (int i = 0; i < array.length(); i++) {
             ids[i] = array[i].trimmed().toInt();
         }

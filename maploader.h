@@ -33,7 +33,7 @@ private:
     void loadProperties(QMap<QString, QString> *properties, QDomElement propertiesElement);
     void loadTileSet(Map *map, QDomElement tileSetElement, QString mapPath, QMap<QString, QPixmap> textures);
     QString findFile(QString mapPath, QString filePath);
-    void loadTileLayer(Map map, QDomElement element);
+    void loadTileLayer(Map *map, QDomElement element);
     void loadBasicLayerInfo(Layer *layer, QDomElement element);
     int *getTileIds(QDomElement element, int width, int height);
     Cell *createTileLayerCell(bool flipHorizontally, bool flipVertically, bool flipDiagonally);
