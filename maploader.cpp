@@ -381,52 +381,52 @@ QString MapLoader::findFile(QString mapPath, QString filePath) {
 }
 
 void MapLoader::loadTileLayer(Map map, QDomElement element) {
-    if (node.nodeName() == "layer") {
-        int width = element.attribute("width", "0");
-        int height = element.attribute("height", "0");
-        int tileWidth = map.getProperties()->value("tilewidth");
-        int tileHeight = map.getProperties()->value("tileheight");
+    if (element.nodeName() == "layer") {
+        int width = element.attribute("width", "0").toInt();
+        int height = element.attribute("height", "0").toInt();
+        int tileWidth = map.getProperties()->value("tilewidth").toInt();
+        int tileHeight = map.getProperties()->value("tileheight").toInt();
         Layer *layer = new Layer(width, height, tileWidth, tileHeight);
 
         loadBasicLayerInfo(layer, element);
 
-        int[] ids = getTileIds(element, width, height);
-        TiledMapTileSets tilesets = map.getTileSets();
+        int *ids = getTileIds(element, width, height);
+        TileSets *tilesets = map.getTileSets();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int id = ids[y * width + x];
-                boolean flipHorizontally = ((id & FLAG_FLIP_HORIZONTALLY) != 0);
-                boolean flipVertically = ((id & FLAG_FLIP_VERTICALLY) != 0);
-                boolean flipDiagonally = ((id & FLAG_FLIP_DIAGONALLY) != 0);
+                bool flipHorizontally = ((id & FLAG_FLIP_HORIZONTALLY) != 0);
+                bool flipVertically = ((id & FLAG_FLIP_VERTICALLY) != 0);
+                bool flipDiagonally = ((id & FLAG_FLIP_DIAGONALLY) != 0);
 
-                TiledMapTile tile = tilesets.getTile(id & ~MASK_CLEAR);
-                if (tile != null) {
-                    Cell cell = createTileLayerCell(flipHorizontally, flipVertically, flipDiagonally);
-                    cell.setTile(tile);
-                    layer.setCell(x, flipY ? height - 1 - y : y, cell);
+                Tile *tile = tilesets->getTile(id & ~MASK_CLEAR);
+                if (tile != NULL) {
+                    Cell *cell = createTileLayerCell(flipHorizontally, flipVertically, flipDiagonally);
+                    cell->setTile(tile);
+                    layer->setCell(x, flipY ? height - 1 - y : y, cell);
                 }
             }
         }
 
-        Element properties = element.getChildByName("properties");
-        if (properties != null) {
-            loadProperties(layer.getProperties(), properties);
+        QDomElement properties = element.firstChildElement("properties");
+        if (!properties.isNull()) {
+            loadProperties(layer->getProperties(), properties);
         }
-        map.getLayers().add(layer);
+        map.getMapLayers()->add(layer);
     }
 }
 
 void MapLoader::loadBasicLayerInfo(Layer *layer, QDomElement element) {
     QString name = element.attribute("name", NULL);
     float opacity = element.attribute("opacity", "1.0").toFloat();
-    bool visible = element.attribute("visible", 1) == 1;
+    bool visible = element.attribute("visible", "1") == "1";
 
     layer->setName(name);
     layer->setOpacity(opacity);
     layer->setVisible(visible);
 }
 
-int *getTileIds(QDomElement element, int width, int height) {
+int *MapLoader::getTileIds(QDomElement element, int width, int height) {
     QDomElement data = element.firstChildElement("data");
     QString encoding = data.attribute("encoding", NULL);
     if (encoding == NULL) { // no 'encoding' attribute means that the encoding is XML
@@ -437,49 +437,69 @@ int *getTileIds(QDomElement element, int width, int height) {
     if (encoding == "csv") {
         QStringList array = data.nodeValue().split(",");
         for (int i = 0; i < array.length(); i++) {
-            ids[i] = (int)Long.parseLong(array[i].trimmed());
+            ids[i] = array[i].trimmed().toInt();
         }
     } else {
-        if (true)
-            if (encoding == "base64") {
-                InputStream is = null;
-                try {
-                    String compression = data.getAttribute("compression", null);
-                    byte[] bytes = Base64Coder.decode(data.getText());
-                    if (compression == null)
-                        is = new ByteArrayInputStream(bytes);
-                    else if (compression.equals("gzip"))
-                        is = new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes), bytes.length));
-                    else if (compression.equals("zlib"))
-                        is = new BufferedInputStream(new InflaterInputStream(new ByteArrayInputStream(bytes)));
-                    else
-                        throw new GdxRuntimeException("Unrecognised compression (" + compression + ") for TMX Layer Data");
+//        if (encoding == "base64") {
+//            InputStream is = null;
+//            try {
+//                QString compression = data.attribute("compression", NULL);
+//                byte[] bytes = Base64Coder.decode(data.getText());
+//                if (compression == NULL)
+//                    is = new ByteArrayInputStream(bytes);
+//                else if (compression.equals("gzip"))
+//                    is = new BufferedInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes), bytes.length));
+//                else if (compression.equals("zlib"))
+//                    is = new BufferedInputStream(new InflaterInputStream(new ByteArrayInputStream(bytes)));
+//                else
+//                    throw new GdxRuntimeException("Unrecognised compression (" + compression + ") for TMX Layer Data");
 
-                    byte[] temp = new byte[4];
-                    for (int y = 0; y < height; y++) {
-                        for (int x = 0; x < width; x++) {
-                            int read = is.read(temp);
-                            while (read < temp.length) {
-                                int curr = is.read(temp, read, temp.length - read);
-                                if (curr == -1) break;
-                                read += curr;
-                            }
-                            if (read != temp.length)
-                                throw new GdxRuntimeException("Error Reading TMX Layer Data: Premature end of tile data");
-                            ids[y * width + x] = unsignedByteToInt(temp[0]) | unsignedByteToInt(temp[1]) << 8
-                                | unsignedByteToInt(temp[2]) << 16 | unsignedByteToInt(temp[3]) << 24;
-                        }
-                    }
-                } catch (IOException e) {
-                    throw new GdxRuntimeException("Error Reading TMX Layer Data - IOException: " + e.getMessage());
-                } finally {
-                    StreamUtils.closeQuietly(is);
-                }
-            } else {
-                // any other value of 'encoding' is one we're not aware of, probably a feature of a future version of Tiled
-                // or another editor
-                throw new GdxRuntimeException("Unrecognised encoding (" + encoding + ") for TMX Layer Data");
-            }
+//                byte[] temp = new byte[4];
+//                for (int y = 0; y < height; y++) {
+//                    for (int x = 0; x < width; x++) {
+//                        int read = is.read(temp);
+//                        while (read < temp.length) {
+//                            int curr = is.read(temp, read, temp.length - read);
+//                            if (curr == -1) break;
+//                            read += curr;
+//                        }
+//                        if (read != temp.length)
+//                            throw new GdxRuntimeException("Error Reading TMX Layer Data: Premature end of tile data");
+//                        ids[y * width + x] = unsignedByteToInt(temp[0]) | unsignedByteToInt(temp[1]) << 8
+//                            | unsignedByteToInt(temp[2]) << 16 | unsignedByteToInt(temp[3]) << 24;
+//                    }
+//                }
+//            } catch (IOException e) {
+//                throw new GdxRuntimeException("Error Reading TMX Layer Data - IOException: " + e.getMessage());
+//            } finally {
+//                StreamUtils.closeQuietly(is);
+//            }
+//        } else {
+//            // any other value of 'encoding' is one we're not aware of, probably a feature of a future version of Tiled
+//            // or another editor
+//            throw new GdxRuntimeException("Unrecognised encoding (" + encoding + ") for TMX Layer Data");
+//        }
     }
     return ids;
+}
+
+Cell *MapLoader::createTileLayerCell(bool flipHorizontally, bool flipVertically, bool flipDiagonally) {
+    Cell *cell = new Cell();
+    if (flipDiagonally) {
+        if (flipHorizontally && flipVertically) {
+            cell->setFlipHorizontally(true);
+            cell->setRotation(Cell::ROTATE_270);
+        } else if (flipHorizontally) {
+            cell->setRotation(Cell::ROTATE_270);
+        } else if (flipVertically) {
+            cell->setRotation(Cell::ROTATE_90);
+        } else {
+            cell->setFlipVertically(true);
+            cell->setRotation(Cell::ROTATE_270);
+        }
+    } else {
+        cell->setFlipHorizontally(flipHorizontally);
+        cell->setFlipVertically(flipVertically);
+    }
+    return cell;
 }

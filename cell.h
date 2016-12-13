@@ -5,25 +5,25 @@
 
 /** @brief represents a cell in a TiledLayer: Tile, flip and rotation properties. */
 class Cell {
-//    static final int ROTATE_0 = 0;
-//    static final int ROTATE_90 = 1;
-//    static final int ROTATE_180 = 2;
-//    static final int ROTATE_270 = 3;
-    Tile tile;
+    Tile *tile;
     bool flipHorizontally;
     bool flipVertically;
     int rotation;
 public:
+    static const int ROTATE_0 = 0;
+    static const int ROTATE_90 = 1;
+    static const int ROTATE_180 = 2;
+    static const int ROTATE_270 = 3;
     Cell();
     /** @return The tile currently assigned to this cell. */
-    Tile getTile () {
+    Tile *getTile () {
         return tile;
     }
 
     /** Sets the tile to be used for this cell.
      *
      * @param tile the {@link Tile} to use for this cell. */
-    void setTile (Tile tile) {
+    void setTile(Tile *tile) {
         this->tile = tile;
     }
 

@@ -12,6 +12,10 @@ TileSets *Map::getTileSets() {
     return &tileSets;
 }
 
+MapLayers *Map::getMapLayers() {
+    return &mapLayers;
+}
+
 /*void Map::loadMap(QString filePath) {
 //    QString fileName = fileName.left(filePath.mid(filePath.lastIndexOf("/")+1).lastIndexOf("."));
     QString fileName = "arena";

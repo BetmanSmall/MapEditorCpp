@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     tilesetwidget.cpp \
     mydockwidget.cpp \
     layer.cpp \
-    cell.cpp
+    cell.cpp \
+    maplayers.cpp
 
 HEADERS  += mainwindow.h \
     map.h \
@@ -40,6 +41,7 @@ HEADERS  += mainwindow.h \
     tilesetwidget.h \
     mydockwidget.h \
     layer.h \
-    cell.h
+    cell.h \
+    maplayers.h
 
 FORMS    += mainwindow.ui

@@ -16,6 +16,10 @@ class MapLoader {
     int mapWidthInPixels;
     int mapHeightInPixels;
     bool flipY = true;
+    int FLAG_FLIP_HORIZONTALLY = 0x80000000;
+    int FLAG_FLIP_VERTICALLY = 0x40000000;
+    int FLAG_FLIP_DIAGONALLY = 0x20000000;
+    int MASK_CLEAR = 0xE0000000;
 
 public:
     MapLoader();
@@ -32,6 +36,7 @@ private:
     void loadTileLayer(Map map, QDomElement element);
     void loadBasicLayerInfo(Layer *layer, QDomElement element);
     int *getTileIds(QDomElement element, int width, int height);
+    Cell *createTileLayerCell(bool flipHorizontally, bool flipVertically, bool flipDiagonally);
 };
 
 #endif // MAPLOADER_H

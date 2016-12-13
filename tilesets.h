@@ -13,6 +13,7 @@ public:
     void addTileSet(TileSet tileSet);
     TileSet *getTileSet(int index);
     QList<TileSet> getTileSets();
+    Tile *getTile(int id);
 };
 
 #endif // TILESETS_H
