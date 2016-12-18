@@ -5,13 +5,13 @@
 
 class Layer {
     QString name;
-    float opacity = 1.0f;
-    bool visible = true;
+    float opacity;
+    bool visible;
 //    MapObjects objects = new MapObjects();
     QMap<QString, QString> properties;
     int width;
     int height;
-    QVector<Cell*> cells;
+    QVector<Cell> cells;
 
     float tileWidth;
     float tileHeight;
@@ -23,11 +23,13 @@ public:
      * @param tileWidth tile width in pixels
      * @param tileHeight tile height in pixels */
     Layer(int width, int height, int tileWidth, int tileHeight) {
+        opacity = 1.0f;
+        visible = true;
         this->width = width;
         this->height = height;
         this->tileWidth = tileWidth;
         this->tileHeight = tileHeight;
-        this->cells = QVector<Cell*>(width*height);
+        this->cells = QVector<Cell>(width*height);
     }
     /** @return layer's name */
     QString getName() {
@@ -95,7 +97,7 @@ public:
     Cell *getCell (int x, int y) {
         if (x < 0 || x >= width) return NULL;
         if (y < 0 || y >= height) return NULL;
-        return cells[y*width+x];
+        return &(cells[y*width+x]);
     }
 
     /** Sets the {@link Cell} at the given coordinates.
@@ -103,7 +105,7 @@ public:
      * @param x X coordinate
      * @param y Y coordinate
      * @param cell the {@link Cell} to set at the given coordinates. */
-    void setCell (int x, int y, Cell *cell) {
+    void setCell (int x, int y, Cell cell) {
         if (x < 0 || x >= width) return;
         if (y < 0 || y >= height) return;
         cells[y*width+x] = cell;

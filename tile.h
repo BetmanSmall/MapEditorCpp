@@ -24,6 +24,7 @@ public:
     QMap<QString, QString> *getProperties();
     void setPixmap(QPixmap pixmap);
     QPixmap getPixmap();
+    QPixmap *getPixmapRef();
 
     void setBlendMode(BlendMode blendMode);
     BlendMode getBlendMode();

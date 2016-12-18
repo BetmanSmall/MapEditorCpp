@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml
+QT       += core gui xml opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     mydockwidget.cpp \
     layer.cpp \
     cell.cpp \
-    maplayers.cpp
+    maplayers.cpp \
+    mapwidgetgl.cpp
 
 HEADERS  += mainwindow.h \
     map.h \
@@ -42,6 +43,7 @@ HEADERS  += mainwindow.h \
     mydockwidget.h \
     layer.h \
     cell.h \
-    maplayers.h
+    maplayers.h \
+    mapwidgetgl.h
 
 FORMS    += mainwindow.ui

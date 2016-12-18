@@ -3,8 +3,10 @@
 #include <QDebug>
 #include <QDateTime>
 
-//AnimatedTile::AnimatedTile() {
-//}
+AnimatedTile::AnimatedTile() {
+    lastTiledMapRenderTime = 0;
+    frameCount = 0;
+}
 
 //int AnimatedTile::getId() {
 //    return id;

@@ -401,8 +401,8 @@ void MapLoader::loadTileLayer(Map *map, QDomElement element) {
 
                 Tile *tile = tilesets->getTile(id & ~MASK_CLEAR);
                 if (tile != NULL) {
-                    Cell *cell = createTileLayerCell(flipHorizontally, flipVertically, flipDiagonally);
-                    cell->setTile(tile);
+                    Cell cell = createTileLayerCell(flipHorizontally, flipVertically, flipDiagonally);
+                    cell.setTile(tile);
                     layer->setCell(x, flipY ? height - 1 - y : y, cell);
                 }
             }
@@ -483,23 +483,23 @@ int *MapLoader::getTileIds(QDomElement element, int width, int height) {
     return ids;
 }
 
-Cell *MapLoader::createTileLayerCell(bool flipHorizontally, bool flipVertically, bool flipDiagonally) {
-    Cell *cell = new Cell();
+Cell MapLoader::createTileLayerCell(bool flipHorizontally, bool flipVertically, bool flipDiagonally) {
+    Cell cell;
     if (flipDiagonally) {
         if (flipHorizontally && flipVertically) {
-            cell->setFlipHorizontally(true);
-            cell->setRotation(Cell::ROTATE_270);
+            cell.setFlipHorizontally(true);
+            cell.setRotation(Cell::ROTATE_270);
         } else if (flipHorizontally) {
-            cell->setRotation(Cell::ROTATE_270);
+            cell.setRotation(Cell::ROTATE_270);
         } else if (flipVertically) {
-            cell->setRotation(Cell::ROTATE_90);
+            cell.setRotation(Cell::ROTATE_90);
         } else {
-            cell->setFlipVertically(true);
-            cell->setRotation(Cell::ROTATE_270);
+            cell.setFlipVertically(true);
+            cell.setRotation(Cell::ROTATE_270);
         }
     } else {
-        cell->setFlipHorizontally(flipHorizontally);
-        cell->setFlipVertically(flipVertically);
+        cell.setFlipHorizontally(flipHorizontally);
+        cell.setFlipVertically(flipVertically);
     }
     return cell;
 }

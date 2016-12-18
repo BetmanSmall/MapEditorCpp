@@ -24,6 +24,11 @@ QPixmap Tile::getPixmap() {
     return pixmap;
 }
 
+QPixmap *Tile::getPixmapRef() {
+//    qDebug() << "Tile::getPixmapRef(); --  pixmap:" << pixmap;
+    return &pixmap;
+}
+
 QMap<QString, QString> *Tile::getProperties() {
 //    qDebug() << "Tile::getProperties(); -- properties:" << &properties; // .toString();
     return &properties;

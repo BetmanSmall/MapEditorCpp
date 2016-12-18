@@ -12,9 +12,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLoadMap, SIGNAL(triggered(bool)), this, SLOT(loadMap()));
 
     MapLoader *mapLoader = new MapLoader();
-    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena2.tmx");
+    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena3.tmx");
 
-    ui->tabWidget->clear();
+//    ui->tabWidget->clear();
     TileSets *tileSets = map->getTileSets();
 //    for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
 //        TileSet *tileSet = tileSets->getTileSet(ts);
@@ -32,7 +32,16 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
 
-    MapLayers *mapLayers = map->getMapLayers();
+    mapLayers = map->getMapLayers();
+
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setBackgroundRole(QPalette::Light);
+    mapWidget = new MapWidgetGL(map);
+    scrollArea->setWidget(mapWidget);
+    QDockWidget *mapDockWidget = new QDockWidget("MAP");
+    mapDockWidget->setWidget(scrollArea);
+
+    addDockWidget(Qt::LeftDockWidgetArea, mapDockWidget);
 }
 
 MainWindow::~MainWindow() {
@@ -40,19 +49,20 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::paintEvent(QPaintEvent *event) {
-    qDebug() << "MainWindow::paintEvent(" << event << ");";
-//    QPainter p;
-//    p.begin(this);
-//    qDebug() << "MainWindow::paintEvent(); -- Test8";
-
-//    p.drawLine(0, 0, width(), height());
-//    p.end();
-//    qDebug() << "MainWindow::paintEvent(); -- !!END!!";
+//    qDebug() << "MainWindow::paintEvent(" << event << ");";
+//    camera.p.begin(this);
+//    drawFullField();
+//    drawGrid();
+//    camera.p.drawLine(0, 0, width(), height());
+//    camera.p.drawLine(width(), 0, 0, height());
+//    camera.p.drawEllipse(0, 0, 200, 200);
+//    camera.p.end();
+    qDebug() << "MainWindow::paintEvent(); -- !!END!!";
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event) {
 //    qDebug() << "MainWindow::wheelEvent(" << event << "); -- ctrlPressed:" << ctrlPressed;
-    qDebug() << "MainWindow::wheelEvent(" << event << "); -- &ctrlPressed:" << &ctrlPressed << " ctrlPressed:" << ctrlPressed;
+//    qDebug() << "MainWindow::wheelEvent(" << event << "); -- &ctrlPressed:" << &ctrlPressed << " ctrlPressed:" << ctrlPressed;
 //    if(ctrlPressed) {
 //        ((TileSetWidget*)(ui->tabWidget->currentWidget()))->wheelEvent(event);
 //    }

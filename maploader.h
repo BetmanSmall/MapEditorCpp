@@ -36,7 +36,7 @@ private:
     void loadTileLayer(Map *map, QDomElement element);
     void loadBasicLayerInfo(Layer *layer, QDomElement element);
     int *getTileIds(QDomElement element, int width, int height);
-    Cell *createTileLayerCell(bool flipHorizontally, bool flipVertically, bool flipDiagonally);
+    Cell createTileLayerCell(bool flipHorizontally, bool flipVertically, bool flipDiagonally);
 };
 
 #endif // MAPLOADER_H

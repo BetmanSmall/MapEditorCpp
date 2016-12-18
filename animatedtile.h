@@ -8,15 +8,15 @@ class AnimatedTile : public Tile {
 //    BlendMode blendMode;// = BlendMode.ALPHA;
 //    QMap<QString, QString> properties;
 
-    long lastTiledMapRenderTime = 0;
+    long lastTiledMapRenderTime;
     QVector<StaticTile*> frameTiles;
     QVector<int> animationIntervals;
 
-    int frameCount = 0;
+    int frameCount;
     int loopDuration;
     long initialTimeOffset;// = TimeUtils.millis();
 public:
-//    AnimatedTile();
+    AnimatedTile();
 
 //    int getId();
 //    void setId(int id);
