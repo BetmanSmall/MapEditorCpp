@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLoadMap, SIGNAL(triggered(bool)), this, SLOT(loadMap()));
 
     MapLoader *mapLoader = new MapLoader();
-    this->map = mapLoader->load("C:/Qt/QtProjects/MapEditorCpp/maps/arena2.tmx");
+    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena.tmx");
     if(map != NULL) {
     //    ui->tabWidget->clear();
         TileSets *tileSets = map->getTileSets();

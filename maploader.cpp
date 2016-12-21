@@ -284,7 +284,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
                     QPixmap tilePix = texture.copy(x, y, tilewidth, tileheight);
                     StaticTile *tile = new StaticTile(tilePix);
                     tile->setId(id);
-                    tile->setOffsetX(offsetX);
+                    tile->setOffsetX(flipX ? -offsetX : offsetX);
                     tile->setOffsetY(flipY ? -offsetY : offsetY);
                     tileset.putTile(id++, tile);
                 }
@@ -303,7 +303,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
                 QPixmap texture = textures.value(imagePath);
                 StaticTile *tile = new StaticTile(texture);
                 tile->setId(firstgid + tileNode.toElement().attribute("id").toInt());
-                tile->setOffsetX(offsetX);
+                tile->setOffsetX(flipX ? -offsetX : offsetX);
                 tile->setOffsetY(flipY ? -offsetY : offsetY);
                 tileset.putTile(tile->getId(), tile);
             }
@@ -404,7 +404,7 @@ void MapLoader::loadTileLayer(Map *map, QDomElement element) {
                 if (tile != NULL) {
                     Cell cell = createTileLayerCell(flipHorizontally, flipVertically, flipDiagonally);
                     cell.setTile(tile);
-                    layer->setCell(x, flipY ? height - 1 - y : y, cell);
+                    layer->setCell(flipX ? width - 1 - x : x, flipY ? height - 1 - y : y, cell);
                 }
             }
         }

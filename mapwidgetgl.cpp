@@ -59,7 +59,7 @@ void MapWidgetGL::drawFullField() {
                             int pixHeight = pix.height();
                             int drawX = mainCoorMapX + isometricSpaceX + x*halfSizeCellX;
                             int drawY = mainCoorMapY + isometricSpaceY - x*halfSizeCellY - pixHeight;
-                            camera.p.drawPixmap(drawX, drawY, sizeCellX, pixHeight, pix);
+                            camera.p.drawPixmap(drawX, drawY, sizeCellX, sizeCellY*2, pix);
                         }
                     } else {
 //                        qDebug() << "MapWidgetGL::drawFullField(); -- Not Tile in Cell(" << x << "," << y << ")";

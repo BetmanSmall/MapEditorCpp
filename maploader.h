@@ -15,6 +15,7 @@ class MapLoader {
     int mapTileHeight;
     int mapWidthInPixels;
     int mapHeightInPixels;
+    bool flipX = false;
     bool flipY = true;
     int FLAG_FLIP_HORIZONTALLY = 0x80000000;
     int FLAG_FLIP_VERTICALLY = 0x40000000;
