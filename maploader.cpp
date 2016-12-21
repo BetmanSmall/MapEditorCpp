@@ -21,6 +21,7 @@ Map* MapLoader::load(QString mapPath) {
             textures.insert(pixFilePath, pix);
         } else {
             qDebug() << "MapLoader::load() -- Can't load QPixmap: " << pixFilePath;
+            return NULL;
         }
     }
 
@@ -276,7 +277,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
             int stopWidth = texture.width() - tilewidth;
             int stopHeight = texture.height() - tileheight;
 
-            int id = 0;
+            int id = 1;
 
             for (int y = margin; y <= stopHeight; y += tileheight + spacing) {
                 for (int x = margin; x <= stopWidth; x += tilewidth + spacing) {

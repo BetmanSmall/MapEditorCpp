@@ -12,36 +12,37 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLoadMap, SIGNAL(triggered(bool)), this, SLOT(loadMap()));
 
     MapLoader *mapLoader = new MapLoader();
-    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena3.tmx");
+    this->map = mapLoader->load("C:/Qt/QtProjects/MapEditorCpp/maps/arena2.tmx");
+    if(map != NULL) {
+    //    ui->tabWidget->clear();
+        TileSets *tileSets = map->getTileSets();
+    //    for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
+    //        TileSet *tileSet = tileSets->getTileSet(ts);
+    //        QScrollArea *scrollArea = new QScrollArea();
+    //        scrollArea->setBackgroundRole(QPalette::Light);
+    //        TileSetWidget *tilesSetWidget = new TileSetWidget(scrollArea, tileSet);
+    //        scrollArea->setWidget(tilesSetWidget);
+    //        ui->tabWidget->addTab(scrollArea, tilesSetWidget->getTileSetName());
+    //    }
+    //    ctrlPressed = true;
+        MyDockWidget *tileSetsDockWidget = new MyDockWidget("Наборы тайлов - TTW Map Editor");
+        for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
+            TileSet *tileSet = tileSets->getTileSet(ts);
+            tileSetsDockWidget->addTileSet(tileSet);
+        }
+        addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
 
-//    ui->tabWidget->clear();
-    TileSets *tileSets = map->getTileSets();
-//    for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
-//        TileSet *tileSet = tileSets->getTileSet(ts);
-//        QScrollArea *scrollArea = new QScrollArea();
-//        scrollArea->setBackgroundRole(QPalette::Light);
-//        TileSetWidget *tilesSetWidget = new TileSetWidget(scrollArea, tileSet);
-//        scrollArea->setWidget(tilesSetWidget);
-//        ui->tabWidget->addTab(scrollArea, tilesSetWidget->getTileSetName());
-//    }
-//    ctrlPressed = true;
-    MyDockWidget *tileSetsDockWidget = new MyDockWidget("Наборы тайлов - TTW Map Editor");
-    for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
-        TileSet *tileSet = tileSets->getTileSet(ts);
-        tileSetsDockWidget->addTileSet(tileSet);
+        mapLayers = map->getMapLayers();
+
+        QScrollArea *scrollArea = new QScrollArea();
+        scrollArea->setBackgroundRole(QPalette::Light);
+        mapWidget = new MapWidgetGL(map);
+        scrollArea->setWidget(mapWidget);
+        QDockWidget *mapDockWidget = new QDockWidget("MAP");
+        mapDockWidget->setWidget(scrollArea);
+
+        addDockWidget(Qt::LeftDockWidgetArea, mapDockWidget);
     }
-    addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
-
-    mapLayers = map->getMapLayers();
-
-    QScrollArea *scrollArea = new QScrollArea();
-    scrollArea->setBackgroundRole(QPalette::Light);
-    mapWidget = new MapWidgetGL(map);
-    scrollArea->setWidget(mapWidget);
-    QDockWidget *mapDockWidget = new QDockWidget("MAP");
-    mapDockWidget->setWidget(scrollArea);
-
-    addDockWidget(Qt::LeftDockWidgetArea, mapDockWidget);
 }
 
 MainWindow::~MainWindow() {

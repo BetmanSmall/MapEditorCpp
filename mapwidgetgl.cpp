@@ -14,7 +14,7 @@ MapWidgetGL::~MapWidgetGL() {
 void MapWidgetGL::paintEvent(QPaintEvent *event) {
 //    qDebug() << "MapWidgetGL::paintEvent(); -- map:" << map;
     camera.p.begin(this);
-//    drawFullField();
+    drawFullField();
     drawGrid();
 //    camera.p.drawLine(0, 0, width(), height());
 //    camera.p.drawLine(width(), 0, 0, height());
@@ -23,11 +23,62 @@ void MapWidgetGL::paintEvent(QPaintEvent *event) {
 //    qDebug() << "MapWidgetGL::paintEvent(); -- !!END!!";
 }
 
+void MapWidgetGL::drawFullField() {
+//    if(field.getIsometric()) {
+    int mainCoorMapX = camera.x;
+    int mainCoorMapY = camera.y + height()/2;
+    int sizeCellX = camera.cellSizeX*camera.scale;
+    int sizeCellY = camera.cellSizeY*camera.scale;
+    int halfSizeCellX = camera.cellSizeX*camera.scale/2;
+    int halfSizeCellY = camera.cellSizeY*camera.scale/2;
+//    int sizeX = (width()/sizeCellX)+1;
+//    int sizeY = (height()/sizeCellY)*2+2;
+    int fieldX = map->getProperties()->value("width").toInt();
+    int fieldY = map->getProperties()->value("height").toInt();
+
+    MapLayers *mapLayer = map->getMapLayers();
+    for (int l = 0; l < mapLayer->getCount(); l++) {
+        Layer *layer = mapLayer->get(l);
+//        qDebug() << "MapWidgetGL::drawFullField(); -- pix:" << pix.isNull();
+//        camera.p.drawPixmap(mainCoorMapX, mainCoorMapY, sizeCellX, sizeCellY*2, pix);
+
+        int isometricSpaceX = 0;
+        int isometricSpaceY = halfSizeCellY;
+//        int isometricSpaceX = halfSizeCellX*fieldY;
+//        int isometricSpaceY = halfSizeCellY*fieldY;
+        for(int y = 0; y < fieldY; y++) {
+            for(int x = 0; x < fieldX; x++) {
+//                QPixmap pix = layer->getCell(x, y)->getTile()->getPixmap();
+                Cell *cell = layer->getCell(x, y);
+                if(cell != NULL) {
+                    Tile *tile = cell->getTile();
+                    if(tile != NULL) {
+                        QPixmap pix = QPixmap(tile->getPixmap());
+                        if(!pix.isNull()) {
+                            int pixWidth = pix.width();
+                            int pixHeight = pix.height();
+                            int drawX = mainCoorMapX + isometricSpaceX + x*halfSizeCellX;
+                            int drawY = mainCoorMapY + isometricSpaceY - x*halfSizeCellY - pixHeight;
+                            camera.p.drawPixmap(drawX, drawY, sizeCellX, pixHeight, pix);
+                        }
+                    } else {
+//                        qDebug() << "MapWidgetGL::drawFullField(); -- Not Tile in Cell(" << x << "," << y << ")";
+                    }
+                } else {
+//                    qDebug() << "MapWidgetGL::drawFullField(); -- Bad Cell(" << x << "," << y << ")";
+                }
+            }
+            isometricSpaceX += halfSizeCellX;
+            isometricSpaceY += halfSizeCellY;
+        }
+    }
+}
+
 void MapWidgetGL::drawGrid() {
 //    qDebug() << "MapWidgetGL::drawGrid(); -- camera.x:" << camera.x << " camera.y:" << camera.y << " camera.cellSizeX:" << camera.cellSizeX << " camera.cellSizeY:" << camera.cellSizeY;
     int mainCoorMapX = camera.x;
     int mainCoorMapY = camera.y + height()/2;
-    int sizeCell = camera.cellSizeX;
+    int sizeCell = camera.cellSizeX*camera.scale;
     camera.p.setPen(QColor(100, 60, 21));
     camera.p.drawEllipse(QPoint(mainCoorMapX, mainCoorMapY), 180, 180);
 
@@ -35,8 +86,8 @@ void MapWidgetGL::drawGrid() {
     int fieldY = map->getProperties()->value("height").toInt();
 
 //    if(field.getIsometric()) {
-        int halfSizeCellX = camera.cellSizeX/2;
-        int halfSizeCellY = camera.cellSizeY/2;
+        int halfSizeCellX = camera.cellSizeX*camera.scale/2;
+        int halfSizeCellY = camera.cellSizeY*camera.scale/2;
 //        int sizeCellX = field.getTileMapWidth()/2;
 //        int sizeCellY = field.getTileMapHeight()/2;
         int isometricSpaceX = halfSizeCellX*fieldY;
@@ -83,54 +134,30 @@ void MapWidgetGL::drawGrid() {
 //    }
 }
 
-void MapWidgetGL::drawFullField() {
-//    if(field.getIsometric()) {
-    int mainCoorMapX = camera.x;
-    int mainCoorMapY = camera.y + height()/2;
-    int sizeCellX = camera.cellSizeX;
-    int sizeCellY = camera.cellSizeY;
-    int halfSizeCellX = camera.cellSizeX/2;
-    int halfSizeCellY = camera.cellSizeY/2;
-//    int sizeX = (width()/sizeCellX)+1;
-//    int sizeY = (height()/sizeCellY)*2+2;
-    int fieldX = map->getProperties()->value("width").toInt();
-    int fieldY = map->getProperties()->value("height").toInt();
+void MapWidgetGL::wheelEvent(QWheelEvent *event) {
+//    scale+=(event->delta()/120);
+//    qDebug() << "MapWidgetGL::wheelEvent(1); -- event.delta():" << event->delta() << " scale:" << scale;
+//    qDebug() << "MapWidgetGL::wheelEvent(2); -- &ctrlPressed:" << &this->ctrlPressed << " ctrlPressed:" << this->ctrlPressed;
+    qDebug() << "MapWidgetGL:" << this << ":wheelEvent(); -- this->ctrlPressed:"/* << this->ctrlPressed*/;
 
-    MapLayers *mapLayer = map->getMapLayers();
-//    for (int l = 0; l < halfSizeCellX; l++) {
-        Layer *layer = mapLayer->get(8);
-//        qDebug() << "MapWidgetGL::drawFullField(); -- pix:" << pix.isNull();
-//        camera.p.drawPixmap(mainCoorMapX, mainCoorMapY, sizeCellX, sizeCellY*2, pix);
-
-        int isometricSpaceX = 0;
-        int isometricSpaceY = halfSizeCellY;
-//        int isometricSpaceX = halfSizeCellX*fieldY;
-//        int isometricSpaceY = halfSizeCellY*fieldY;
-        for(int y = 0; y < fieldY; y++) {
-            for(int x = 0; x < fieldX; x++) {
-//                QPixmap pix = layer->getCell(x, y)->getTile()->getPixmap();
-                Cell *cell = layer->getCell(x, y);
-                if(cell != NULL) {
-                    Tile *tile = cell->getTile();
-                    if(tile != NULL) {
-                        QPixmap pix = QPixmap(tile->getPixmap());
-                        if(!pix.isNull()) {
-                            int pixWidth = pix.width();
-                            int pixHeight = pix.height();
-                            int drawX = mainCoorMapX + isometricSpaceX + x*halfSizeCellX;
-                            int drawY = mainCoorMapY + isometricSpaceY - x*halfSizeCellY - pixHeight;
-                            camera.p.drawPixmap(drawX, drawY, sizeCellX, sizeCellY, pix);
-                        }
-                    } else {
-                        qDebug() << "1";
-                    }
-                } else {
-                    qDebug() << "2";
-                }
+//    if(this->ctrlPressed) {
+        qDebug() << "MapWidgetGL::wheelEvent(2); -- event.delta():" << event->delta() << " scale:" << camera.scale;
+        if(event->delta() > 0) {
+            if(camera.scale < 5) {
+                camera.scale += 0.1;
             }
-            isometricSpaceX += halfSizeCellX;
-            isometricSpaceY += halfSizeCellY;
+        } else {
+//            if(parentWidget()->height() < (rows*tileHeight)*scale) {
+                qDebug() << "qweqwe";
+                camera.scale -= 0.1;
+//            } else {
+//                qDebug() << "NOT do";
+//            }
         }
+//        setGeometry(QRect(0, 0, columns*(tileWidht*scale), rows*(tileHeight*scale)));
+        repaint();
+//    } else {
+//        ((MyDockWidget*)parentWidget())->wheelEvent(event);
 //    }
 }
 

@@ -11,6 +11,8 @@
 
 #include <QPainter>
 #include <QPaintEvent>
+#include <QWheelEvent>
+
 #include "map.h"
 
 class Camera {
@@ -18,7 +20,8 @@ public:
     QPainter p;
     int x, y;
     int cellSizeX, cellSizeY;
-    Camera(): x(0), y(0), cellSizeX(64), cellSizeY(32) {}
+    float scale;
+    Camera(): x(0), y(0), cellSizeX(64), cellSizeY(32), scale(1) {}
 };
 
 //class MapWidgetGL : public QOpenGLWidget, public QDockWidget {
@@ -33,6 +36,7 @@ protected:
     void paintEvent(QPaintEvent *event);
     void drawGrid();
     void drawFullField();
+    void wheelEvent(QWheelEvent *event);
 //    void initializeGL();
 //    void resizeGL(int w, int h);
 //    void paintGL();
