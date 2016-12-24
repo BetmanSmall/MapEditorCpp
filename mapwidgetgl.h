@@ -11,7 +11,9 @@
 
 #include <QPainter>
 #include <QPaintEvent>
-#include <QWheelEvent>
+#include <QMouseEvent>
+//#include <QWheelEvent>
+//#include <QKeyEvent>
 
 #include "map.h"
 
@@ -20,8 +22,18 @@ public:
     QPainter p;
     int x, y;
     int cellSizeX, cellSizeY;
-    float scale;
-    Camera(): x(0), y(0), cellSizeX(64), cellSizeY(32), scale(1) {}
+    float zoom;
+    Camera(): x(0), y(0), cellSizeX(64), cellSizeY(32), zoom(0.49f) {}
+    QString toString() {
+        QString str = "Camera:[";
+        str.append("x:" + QString::number(x));
+        str.append(",y:" + QString::number(y));
+        str.append(",cellSizeX:" + QString::number(cellSizeX));
+        str.append(",cellSizeY:" + QString::number(cellSizeY));
+        str.append(",zoom:" + QString::number(zoom));
+        str.append("]");
+        return str;
+    }
 };
 
 //class MapWidgetGL : public QOpenGLWidget, public QDockWidget {
@@ -32,11 +44,19 @@ public:
     Map *map;
     Camera camera;
 
+    bool isDrawableTerrain = true;
+    bool isDrawableGrid = true;
+    bool isDrawableCreeps = true;
+    bool isDrawableTowers = true;
+    bool isDrawableRoutes = true;
+    bool isDrawableGridNav = true;
 protected:
     void paintEvent(QPaintEvent *event);
     void drawGrid();
     void drawFullField();
-    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+//    void wheelEvent(QWheelEvent *event);
+//    void keyPress(QKeyEvent *event);
 //    void initializeGL();
 //    void resizeGL(int w, int h);
 //    void paintGL();

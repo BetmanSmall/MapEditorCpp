@@ -404,7 +404,7 @@ void MapLoader::loadTileLayer(Map *map, QDomElement element) {
                 if (tile != NULL) {
                     Cell cell = createTileLayerCell(flipHorizontally, flipVertically, flipDiagonally);
                     cell.setTile(tile);
-                    layer->setCell(flipX ? width - 1 - x : x, flipY ? height - 1 - y : y, cell);
+                    layer->setCell((flipX)?(width-1-x):(x), (flipY)?(height-1-y):(y), cell);
                 }
             }
         }

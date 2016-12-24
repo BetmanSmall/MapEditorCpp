@@ -24,14 +24,14 @@ QString TileSetWidget::getTileSetName() {
 void TileSetWidget::setCtrl(bool pressed) {
 //    qDebug() << "TileSetWidget::setCtrl(" << pressed << "); -- &pressed:" << &pressed << " pressed:" << pressed;
 //    qDebug() << "TileSetWidget::setCtrl(" << pressed << "); -- &ctrlPressed:" << &ctrlPressed << " ctrlPressed:" << ctrlPressed;
-    qDebug() << "TileSetWidget:" << this << ":setCtrl(); -- this->ctrlPressed:" << this->ctrlPressed;
+    qDebug() << "TileSetWidget::setCtrl(); -- this->ctrlPressed:" << this->ctrlPressed;
     this->ctrlPressed = pressed;
 }
 
 void TileSetWidget::paintEvent(QPaintEvent *event) {
 //    qDebug() << "TilesSetWidget::paintEvent(); -- scale:" << scale << " width():" << width() << " height():" << height();
 //    qDebug() << "TilesSetWidget::paintEvent(" << event << "); -- &ctrlPressed:" << &ctrlPressed << " ctrlPressed:" << ctrlPressed;
-    qDebug() << "TileSetWidget:" << this << ":paintEvent(); -- this->ctrlPressed:" << this->ctrlPressed;
+//    qDebug() << "TileSetWidget:" << this << ":paintEvent(); -- this->ctrlPressed:" << this->ctrlPressed;
     QPainter p;
     p.begin(this);
 //    p.scale(scale, scale);
@@ -53,7 +53,7 @@ void TileSetWidget::paintEvent(QPaintEvent *event) {
             }
         }
     }
-    qDebug() << "TileSetWidget:" << this << ":paintEvent(); -- this->selectedTile:" << this->selectedTile;
+//    qDebug() << "TileSetWidget:" << this << ":paintEvent(); -- this->selectedTile:" << this->selectedTile;
     if(!selectedTile->isNull()) {
         p.fillRect(*selectedTile, QBrush(QColor(128, 128, 255, 128)));
     }

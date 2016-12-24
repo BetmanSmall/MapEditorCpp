@@ -12,25 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLoadMap, SIGNAL(triggered(bool)), this, SLOT(loadMap()));
 
     MapLoader *mapLoader = new MapLoader();
-    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena.tmx");
+    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena4.tmx");
     if(map != NULL) {
-    //    ui->tabWidget->clear();
-        TileSets *tileSets = map->getTileSets();
-    //    for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
-    //        TileSet *tileSet = tileSets->getTileSet(ts);
-    //        QScrollArea *scrollArea = new QScrollArea();
-    //        scrollArea->setBackgroundRole(QPalette::Light);
-    //        TileSetWidget *tilesSetWidget = new TileSetWidget(scrollArea, tileSet);
-    //        scrollArea->setWidget(tilesSetWidget);
-    //        ui->tabWidget->addTab(scrollArea, tilesSetWidget->getTileSetName());
-    //    }
-    //    ctrlPressed = true;
-        MyDockWidget *tileSetsDockWidget = new MyDockWidget("Наборы тайлов - TTW Map Editor");
-        for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
-            TileSet *tileSet = tileSets->getTileSet(ts);
-            tileSetsDockWidget->addTileSet(tileSet);
-        }
-        addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
+//        TileSets *tileSets = map->getTileSets();
+//        MyDockWidget *tileSetsDockWidget = new MyDockWidget("Наборы тайлов - TTW Map Editor");
+//        for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
+//            TileSet *tileSet = tileSets->getTileSet(ts);
+//            tileSetsDockWidget->addTileSet(tileSet);
+//        }
+//        addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
 
         mapLayers = map->getMapLayers();
 
@@ -41,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QDockWidget *mapDockWidget = new QDockWidget("MAP");
         mapDockWidget->setWidget(scrollArea);
 
-        addDockWidget(Qt::LeftDockWidgetArea, mapDockWidget);
+        addDockWidget(Qt::TopDockWidgetArea, mapDockWidget);
     }
 }
 
@@ -58,7 +48,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 //    camera.p.drawLine(width(), 0, 0, height());
 //    camera.p.drawEllipse(0, 0, 200, 200);
 //    camera.p.end();
-    qDebug() << "MainWindow::paintEvent(); -- !!END!!";
+//    qDebug() << "MainWindow::paintEvent(); -- !!END!!";
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event) {
@@ -72,21 +62,38 @@ void MainWindow::wheelEvent(QWheelEvent *event) {
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     int key = event->key();
     qDebug() << "MainWindow::keyPressEvent(); -- key:" << key;
-//    ((TileSetWidget*)(ui->tabWidget->currentWidget()))->keyPress(event);
-//    if(key == Qt::Key_Control) {
-//        ((TileSetWidget*)(ui->tabWidget->currentWidget()))->setCtrl(true);
-//        qDebug() << "MainWindow::keyPressEvent(); -- &ctrlPressed:" << &ctrlPressed << " ctrlPressed:" << ctrlPressed;
-//    }
+    if(mapWidget != NULL) {
+        if(key == 43) { // Qt::Key_Plus
+            mapWidget->camera.zoom += 0.01;
+            mapWidget->repaint();
+        } else if(key == 45) { // Qt::Key_Minus
+            mapWidget->camera.zoom -= 0.01;
+            mapWidget->repaint();
+        } else if(key == 93) {
+            mapWidget->map->getMapLayers()->turnRight();
+            mapWidget->repaint();
+        } else if(key == 91) {
+            mapWidget->map->getMapLayers()->turnLeft();
+            mapWidget->repaint();
+        } else if(key == 39) {
+            mapWidget->map->getMapLayers()->flipX();
+            mapWidget->repaint();
+        } else if(key == 59) {
+            mapWidget->map->getMapLayers()->flipY();
+            mapWidget->repaint();
+        } else if(key == 49) {
+            mapWidget->isDrawableGrid = !mapWidget->isDrawableGrid;
+            mapWidget->repaint();
+        } else if(key == 50) {
+            mapWidget->isDrawableTerrain = !mapWidget->isDrawableTerrain;
+            mapWidget->repaint();
+        }
+    }
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event) {
     int key = event->key();
     qDebug() << "MainWindow::keyReleaseEvent(); -- key:" << key;
-//    ((TileSetWidget*)(ui->tabWidget->currentWidget()))->keyRelease(event);
-//    if(key == Qt::Key_Control) {
-//        ((TileSetWidget*)(ui->tabWidget->currentWidget()))->setCtrl(false);
-//        ctrlPressed = false;
-//    }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {

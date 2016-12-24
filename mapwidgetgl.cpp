@@ -13,9 +13,12 @@ MapWidgetGL::~MapWidgetGL() {
 
 void MapWidgetGL::paintEvent(QPaintEvent *event) {
 //    qDebug() << "MapWidgetGL::paintEvent(); -- map:" << map;
+//    this->setGeometry(QRect(0, 0, map->getProperties()->value("width").toInt()*camera.cellSizeX*camera.zoom, map->getProperties()->value("height").toInt()*camera.cellSizeY*camera.zoom));
     camera.p.begin(this);
-    drawFullField();
-    drawGrid();
+    if(isDrawableTerrain)
+        drawFullField();
+    if(isDrawableGrid)
+        drawGrid();
 //    camera.p.drawLine(0, 0, width(), height());
 //    camera.p.drawLine(width(), 0, 0, height());
 //    camera.p.drawEllipse(0, 0, 200, 200);
@@ -27,10 +30,10 @@ void MapWidgetGL::drawFullField() {
 //    if(field.getIsometric()) {
     int mainCoorMapX = camera.x;
     int mainCoorMapY = camera.y + height()/2;
-    int sizeCellX = camera.cellSizeX*camera.scale;
-    int sizeCellY = camera.cellSizeY*camera.scale;
-    int halfSizeCellX = camera.cellSizeX*camera.scale/2;
-    int halfSizeCellY = camera.cellSizeY*camera.scale/2;
+    int sizeCellX = camera.cellSizeX*camera.zoom;
+    int sizeCellY = camera.cellSizeY*camera.zoom;
+    int halfSizeCellX = sizeCellX/2;
+    int halfSizeCellY = sizeCellY/2;
 //    int sizeX = (width()/sizeCellX)+1;
 //    int sizeY = (height()/sizeCellY)*2+2;
     int fieldX = map->getProperties()->value("width").toInt();
@@ -58,8 +61,8 @@ void MapWidgetGL::drawFullField() {
                             int pixWidth = pix.width();
                             int pixHeight = pix.height();
                             int drawX = mainCoorMapX + isometricSpaceX + x*halfSizeCellX;
-                            int drawY = mainCoorMapY + isometricSpaceY - x*halfSizeCellY - pixHeight;
-                            camera.p.drawPixmap(drawX, drawY, sizeCellX, sizeCellY*2, pix);
+                            int drawY = mainCoorMapY + isometricSpaceY - x*halfSizeCellY;
+                            camera.p.drawPixmap(drawX, drawY - sizeCellY*2, sizeCellX, sizeCellY*2, pix);
                         }
                     } else {
 //                        qDebug() << "MapWidgetGL::drawFullField(); -- Not Tile in Cell(" << x << "," << y << ")";
@@ -75,10 +78,10 @@ void MapWidgetGL::drawFullField() {
 }
 
 void MapWidgetGL::drawGrid() {
-//    qDebug() << "MapWidgetGL::drawGrid(); -- camera.x:" << camera.x << " camera.y:" << camera.y << " camera.cellSizeX:" << camera.cellSizeX << " camera.cellSizeY:" << camera.cellSizeY;
+    qDebug() << "MapWidgetGL::drawGrid(); -- " << camera.toString();
     int mainCoorMapX = camera.x;
     int mainCoorMapY = camera.y + height()/2;
-    int sizeCell = camera.cellSizeX*camera.scale;
+    int sizeCell = camera.cellSizeX*camera.zoom;
     camera.p.setPen(QColor(100, 60, 21));
     camera.p.drawEllipse(QPoint(mainCoorMapX, mainCoorMapY), 180, 180);
 
@@ -86,8 +89,8 @@ void MapWidgetGL::drawGrid() {
     int fieldY = map->getProperties()->value("height").toInt();
 
 //    if(field.getIsometric()) {
-        int halfSizeCellX = camera.cellSizeX*camera.scale/2;
-        int halfSizeCellY = camera.cellSizeY*camera.scale/2;
+        int halfSizeCellX = camera.cellSizeX*camera.zoom/2;
+        int halfSizeCellY = camera.cellSizeY*camera.zoom/2;
 //        int sizeCellX = field.getTileMapWidth()/2;
 //        int sizeCellY = field.getTileMapHeight()/2;
         int isometricSpaceX = halfSizeCellX*fieldY;
@@ -134,32 +137,42 @@ void MapWidgetGL::drawGrid() {
 //    }
 }
 
-void MapWidgetGL::wheelEvent(QWheelEvent *event) {
-//    scale+=(event->delta()/120);
-//    qDebug() << "MapWidgetGL::wheelEvent(1); -- event.delta():" << event->delta() << " scale:" << scale;
-//    qDebug() << "MapWidgetGL::wheelEvent(2); -- &ctrlPressed:" << &this->ctrlPressed << " ctrlPressed:" << this->ctrlPressed;
-    qDebug() << "MapWidgetGL:" << this << ":wheelEvent(); -- this->ctrlPressed:"/* << this->ctrlPressed*/;
-
-//    if(this->ctrlPressed) {
-        qDebug() << "MapWidgetGL::wheelEvent(2); -- event.delta():" << event->delta() << " scale:" << camera.scale;
-        if(event->delta() > 0) {
-            if(camera.scale < 5) {
-                camera.scale += 0.1;
-            }
-        } else {
-//            if(parentWidget()->height() < (rows*tileHeight)*scale) {
-                qDebug() << "qweqwe";
-                camera.scale -= 0.1;
-//            } else {
-//                qDebug() << "NOT do";
-//            }
-        }
-//        setGeometry(QRect(0, 0, columns*(tileWidht*scale), rows*(tileHeight*scale)));
-        repaint();
-//    } else {
-//        ((MyDockWidget*)parentWidget())->wheelEvent(event);
-//    }
+void MapWidgetGL::mousePressEvent(QMouseEvent *event) {
+    int x = event->x();
+    int y = event->y();
+    qDebug() << "MapWidgetGL::mousePressEvent(" << event << "); -- x:" << x << " y:" << y;
 }
+
+//void MapWidgetGL::wheelEvent(QWheelEvent *event) {
+////    scale+=(event->delta()/120);
+////    qDebug() << "MapWidgetGL::wheelEvent(1); -- event.delta():" << event->delta() << " scale:" << scale;
+////    qDebug() << "MapWidgetGL::wheelEvent(2); -- &ctrlPressed:" << &this->ctrlPressed << " ctrlPressed:" << this->ctrlPressed;
+//    qDebug() << "MapWidgetGL:" << this << ":wheelEvent(); -- this->ctrlPressed:"/* << this->ctrlPressed*/;
+
+////    if(this->ctrlPressed) {
+//        qDebug() << "MapWidgetGL::wheelEvent(2); -- event.delta():" << event->delta() << " scale:" << camera.zoom;
+//        if(event->delta() > 0) {
+//            if(camera.zoom < 5) {
+//                camera.zoom += 0.1;
+//            }
+//        } else {
+////            if(parentWidget()->height() < (rows*tileHeight)*scale) {
+//                qDebug() << "qweqwe";
+//                camera.zoom -= 0.1;
+////            } else {
+////                qDebug() << "NOT do";
+////            }
+//        }
+////        setGeometry(QRect(0, 0, columns*(tileWidht*scale), rows*(tileHeight*scale)));
+//        repaint();
+////    } else {
+////        ((MyDockWidget*)parentWidget())->wheelEvent(event);
+////    }
+//}
+
+//void MapWidgetGL::keyPress(QKeyEvent *event) {
+//    qDebug() << "MapWidgetGL::keyPress(" << event << "); -- key:" << event->key();
+//}
 
 //void MapWidgetGL::initializeGL() {
 //    qDebug() << "MapWidget::initializeGL();";
