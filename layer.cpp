@@ -71,41 +71,71 @@ void Layer::setCell (int x, int y, Cell cell) {
 }
 
 bool Layer::turnRight() {
-    if(!cells.isEmpty() && width == height) {
-        QVector<Cell> newCells(width*height);
-        for(int y = 0; y < height; y++) {
-            for(int x = 0; x < width; x++) {
-                newCells[width*(x)+(width-y-1)] = cells[width*y+x];
+    if(!cells.isEmpty()) {
+        if(width == height) {
+            QVector<Cell> newCells(width*height);
+            for(int y = 0; y < height; y++) {
+                for(int x = 0; x < width; x++) {
+                    newCells[width*(x)+(width-y-1)] = cells[width*y+x];
+                }
             }
+            cells = newCells;
+            return true;
+        } else {
+            int oldWidth = width;
+            int oldHeight = height;
+            width = height;
+            height = oldWidth;
+            QVector<Cell> newCells(width*height);
+            for(int y = 0; y < oldHeight; y++) {
+                for(int x = 0; x < oldWidth; x++) {
+                    newCells[width*(x)+(width-y-1)] = cells[oldWidth*y+x];
+                }
+            }
+            cells = newCells;
+            return true;
         }
-        cells = newCells;
-        return true;
     } else {
         return false;
     }
 }
 
 bool Layer::turnLeft() {
-    if(!cells.isEmpty() && width == height) {
-        QVector<Cell> newCells(width*height);
-        for(int y = 0; y < height; y++) {
-            for(int x = 0; x < width; x++) {
-                newCells[width*(height-x-1)+(y)] = cells[width*y+x];
+    if(!cells.isEmpty()) {
+        if(width == height) {
+            QVector<Cell> newCells(width*height);
+            for(int y = 0; y < height; y++) {
+                for(int x = 0; x < width; x++) {
+                    newCells[width*(height-x-1)+(y)] = cells[width*y+x];
+                }
             }
+            cells = newCells;
+            return true;
+        } else {
+            int oldWidth = width;
+            int oldHeight = height;
+            width = height;
+            height = oldWidth;
+            QVector<Cell> newCells(width*height);
+            for(int y = 0; y < oldHeight; y++) {
+                for(int x = 0; x < oldWidth; x++) {
+                    newCells[width*(height-x-1)+(y)] = cells[oldWidth*y+x];
+                }
+            }
+            cells = newCells;
+            return true;
         }
-        cells = newCells;
-        return true;
     } else {
         return false;
     }
 }
 
 bool Layer::flipX() {
-    if(!cells.isEmpty() && width == height) {
+    if(!cells.isEmpty()) {
         QVector<Cell> newCells(width*height);
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) {
-                newCells[width*(width-y-1)+(x)] = cells[width*y+x];
+                newCells[width*(y)+(width-x-1)] = cells[width*y+x];
             }
         }
         cells = newCells;
@@ -116,11 +146,11 @@ bool Layer::flipX() {
 }
 
 bool Layer::flipY() {
-    if(!cells.isEmpty() && width == height) {
+    if(!cells.isEmpty()) {
         QVector<Cell> newCells(width*height);
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) {
-                newCells[width*(y)+(height-x-1)] = cells[width*y+x];
+                newCells[width*(height-y-1)+(x)] = cells[width*y+x];
             }
         }
         cells = newCells;

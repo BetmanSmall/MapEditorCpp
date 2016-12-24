@@ -70,16 +70,16 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             mapWidget->camera.zoom -= 0.01;
             mapWidget->repaint();
         } else if(key == 93) {
-            mapWidget->map->getMapLayers()->turnRight();
+            mapWidget->map->turnRight();
             mapWidget->repaint();
         } else if(key == 91) {
-            mapWidget->map->getMapLayers()->turnLeft();
+            mapWidget->map->turnLeft();
             mapWidget->repaint();
         } else if(key == 39) {
-            mapWidget->map->getMapLayers()->flipX();
+            mapWidget->map->flipX();
             mapWidget->repaint();
         } else if(key == 59) {
-            mapWidget->map->getMapLayers()->flipY();
+            mapWidget->map->flipY();
             mapWidget->repaint();
         } else if(key == 49) {
             mapWidget->isDrawableGrid = !mapWidget->isDrawableGrid;

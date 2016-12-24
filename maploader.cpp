@@ -178,6 +178,8 @@ Map *MapLoader::loadMap(QDomElement mapElement, QString mapPath, QMap<QString, Q
         }
         node = node.nextSibling();
     }
+    map->width = mapWidth;
+    map->height = mapHeight;
     return map;
 }
 

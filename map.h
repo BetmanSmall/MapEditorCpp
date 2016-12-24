@@ -12,6 +12,7 @@ public:
     TileSets tileSets;
     MapLayers mapLayers;
     QMap<QString, QString> properties;
+    int width, height;
 
 public:
     Map();
@@ -20,6 +21,10 @@ public:
     MapLayers *getMapLayers();
 //    void loadMap(QString fileName);
 //    QString findFile(QString filePath);
+    void turnRight();
+    void turnLeft();
+    void flipX();
+    void flipY();
 private:
 };
 

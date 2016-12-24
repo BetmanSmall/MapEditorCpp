@@ -65,3 +65,23 @@ MapLayers *Map::getMapLayers() {
         qDebug() << name << ":" << properties.value(name);
     }
 }*/
+
+void Map::turnRight() {
+    mapLayers.turnRight();
+    this->width = mapLayers.get(0)->getWidth();
+    this->height = mapLayers.get(0)->getHeight();
+}
+
+void Map::turnLeft() {
+    mapLayers.turnLeft();
+    this->width = mapLayers.get(0)->getWidth();
+    this->height = mapLayers.get(0)->getHeight();
+}
+
+void Map::flipX() {
+    mapLayers.flipX();
+}
+
+void Map::flipY() {
+    mapLayers.flipY();
+}

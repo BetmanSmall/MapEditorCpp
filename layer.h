@@ -2,6 +2,7 @@
 #define LAYER_H
 
 #include "cell.h"
+//#include "map.h"
 
 class Layer {
     QString name;

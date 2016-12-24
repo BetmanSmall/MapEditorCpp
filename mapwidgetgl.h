@@ -53,7 +53,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *event);
     void drawGrid();
-    void drawFullField();
+    void drawTerrain();
     void mousePressEvent(QMouseEvent *event);
 //    void wheelEvent(QWheelEvent *event);
 //    void keyPress(QKeyEvent *event);
