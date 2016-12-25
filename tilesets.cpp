@@ -25,9 +25,13 @@ Tile *TileSets::getTile(int id) {
     // iterating precedence for conflicts is given to later tilesets in the list,
     // which are likely to be the earlier version of any given gid.
     // See TiledMapModifiedExternalTilesetTest for example of this issue.
+    id++;
     for (int i = tileSets.length()-1; i >= 0; i--) {
+//    for (int i = 0; i < tileSets.length(); i++) {
         TileSet tileset = tileSets[i];
-        Tile *tile = tileset.getTile(id);
+        if(tileset.firshgid >= id)
+            continue;
+        Tile *tile = tileset.getLocalTile(id-tileset.firshgid);
         if (tile != NULL) {
             return tile;
         }

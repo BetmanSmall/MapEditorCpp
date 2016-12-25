@@ -1,7 +1,7 @@
 #include "tileset.h"
 
 TileSet::TileSet() {
-
+//    firshgid = properties.value("firstgid").toInt();
 }
 
 TileSet::TileSet(QString name) {
@@ -24,10 +24,18 @@ void TileSet::putTile(int id, Tile *tile) {
     tiles.insert(id, tile);
 }
 
-Tile *TileSet::getTile(int id) {
-//    int firshgid = properties.value("firstgid").toInt();
-//    int delta = id - firshgid;
-    return tiles[id];
+Tile *TileSet::getGlobalTile(int id) {
+    if(id >= firshgid)
+        return tiles[id-firshgid];
+    else
+        return NULL;
+}
+
+Tile *TileSet::getLocalTile(int id) {
+    if(id >= 1 && id <= tiles.size())
+        return tiles[id];
+    else
+        return NULL;
 }
 
 QList<Tile*> TileSet::getTiles() {

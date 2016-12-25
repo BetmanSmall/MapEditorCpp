@@ -23,7 +23,7 @@ public:
     int x, y;
     int cellSizeX, cellSizeY;
     float zoom;
-    Camera(): x(0), y(0), cellSizeX(64), cellSizeY(32), zoom(0.49f) {}
+    Camera(): x(0), y(0), cellSizeX(64), cellSizeY(32), zoom(0.5f) {}
     QString toString() {
         QString str = "Camera:[";
         str.append("x:" + QString::number(x));
@@ -55,6 +55,7 @@ protected:
     void drawGrid();
     void drawTerrain();
     void mousePressEvent(QMouseEvent *event);
+    bool whichCell(int &mouseX, int &mouseY);
 //    void wheelEvent(QWheelEvent *event);
 //    void keyPress(QKeyEvent *event);
 //    void initializeGL();

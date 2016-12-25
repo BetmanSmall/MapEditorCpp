@@ -263,6 +263,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
         TileSet tileset(name);
 //        tileset.setName(name);
         tileset.getProperties()->insert("firstgid", QString::number(firstgid));
+        tileset.firshgid = firstgid;
         if (imagePath != "") {
             QPixmap texture = textures.value(imagePath);
 
@@ -316,7 +317,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
         for(int k = 0; k < tilesNodeList.length(); k++) {
             QDomElement tileElement = tilesNodeList.item(k).toElement();
             int localtid = tileElement.attribute("id", "0").toInt();
-            Tile *tile = tileset.getTile(firstgid + localtid);
+            Tile *tile = tileset.getLocalTile(localtid+1);
             if (tile != NULL) {
                 QDomElement animationElement = tileElement.firstChildElement("animation");
                 if (!animationElement.isNull()) {
@@ -325,7 +326,7 @@ void MapLoader::loadTileSet(Map *map, QDomElement tileSetElement, QString mapPat
                     QDomNodeList framesNodeList = animationElement.elementsByTagName("frame");
                     for (int f = 0; f < framesNodeList.length(); f++) {
                         QDomElement frameElement = framesNodeList.item(f).toElement();
-                        staticTiles.append((StaticTile*) tileset.getTile(firstgid + frameElement.attribute("tileid").toInt()));
+                        staticTiles.append((StaticTile*) tileset.getLocalTile(frameElement.attribute("tileid").toInt()+1));
                         intervals.append(frameElement.attribute("duration").toInt());
                     }
 

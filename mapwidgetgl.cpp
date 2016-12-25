@@ -21,7 +21,7 @@ void MapWidgetGL::paintEvent(QPaintEvent *event) {
         drawGrid();
 //    camera.p.drawLine(0, 0, width(), height());
 //    camera.p.drawLine(width(), 0, 0, height());
-//    camera.p.drawEllipse(0, 0, 200, 200);
+//    camera.p.drawEllipse(40, 0, 200, 200);
     camera.p.end();
 //    qDebug() << "MapWidgetGL::paintEvent(); -- !!END!!";
 }
@@ -116,6 +116,47 @@ void MapWidgetGL::mousePressEvent(QMouseEvent *event) {
     int x = event->x();
     int y = event->y();
     qDebug() << "MapWidgetGL::mousePressEvent(" << event << "); -- x:" << x << " y:" << y;
+    int mouseX = x;
+    int mouseY = y;
+    whichCell(mouseX, mouseY);
+}
+
+bool MapWidgetGL::whichCell(int &mouseX, int &mouseY) {
+    qDebug() << "MapWidgetGL::whichCell(" << mouseX << ", " << mouseY << "); -- " << camera.toString();
+    int mainCoorMapX = camera.x;
+    int mainCoorMapY = camera.y;
+    int sizeCellX = camera.cellSizeX*camera.zoom;
+    int sizeCellY = camera.cellSizeY*camera.zoom;
+    int fieldX = map->width;
+    int fieldY = map->height;
+    qDebug() << "MapWidgetGL::whichCell(2); - fieldX:" << fieldX << ", fieldY:" << fieldY;
+
+    int gameX, gameY;
+
+    int isometricCoorX = (sizeCellX/2) * fieldY;
+    int isometricCoorY = 0;
+
+    int localMouseX = -mainCoorMapX + mouseX - isometricCoorX;
+    int localMouseY = -mainCoorMapY + mouseY + sizeCellY;
+    qDebug() << "MapWidgetGL::whichCell(3); - localMouseX:" << localMouseX << ", localMouseY:" << localMouseY;
+
+    gameX = (localMouseX/2 + localMouseY) / (sizeCellX/2);
+    gameY = -(localMouseX/2 - localMouseY) / (sizeCellX/2);
+    qDebug() << "MapWidgetGL::whichCell(4); - gameX:" << gameX << ", gameY:" << gameY;
+
+//    QString text = QString("%1/%2").arg(gameX).arg(gameY);
+//    global_text2 = text.toStdString().c_str();
+
+    if(gameX > 0 && gameX < fieldX+1) {
+        if(gameY > 0 && gameY < fieldY+1) {
+            mouseX = gameX-1;
+            mouseY = gameY-1;
+            qDebug() << "MapWidgetGL::whichCell(5); - mouseX:" << mouseX << ", mouseY:" << mouseY;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 //void MapWidgetGL::wheelEvent(QWheelEvent *event) {
