@@ -31,7 +31,7 @@ int MapLayers::getIndex(Layer *layer) {
 }
 
 /** @return number of layers in the collection */
-int MapLayers::getCount() {
+int MapLayers::size() {
     return layers.length();
 }
 

@@ -14,15 +14,17 @@ MainWindow::MainWindow(QWidget *parent) :
     MapLoader *mapLoader = new MapLoader();
     this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena4.tmx");
     if(map != NULL) {
-//        TileSets *tileSets = map->getTileSets();
-//        MyDockWidget *tileSetsDockWidget = new MyDockWidget("Наборы тайлов - TTW Map Editor");
-//        for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
-//            TileSet *tileSet = tileSets->getTileSet(ts);
-//            tileSetsDockWidget->addTileSet(tileSet);
-//        }
-//        addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
+        TileSets *tileSets = map->getTileSets();
+        MyDockWidget *tileSetsDockWidget = new MyDockWidget("Наборы тайлов - TTW Map Editor");
+        for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
+            TileSet *tileSet = tileSets->getTileSet(ts);
+            tileSetsDockWidget->addTileSet(tileSet);
+        }
+        addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
 
         mapLayers = map->getMapLayers();
+        DockWidgetLayers* dockWidgetLayers = new DockWidgetLayers(mapLayers, this);
+        addDockWidget(Qt::RightDockWidgetArea, dockWidgetLayers);
 
         QScrollArea *scrollArea = new QScrollArea();
         scrollArea->setBackgroundRole(QPalette::Light);
@@ -31,7 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
         QDockWidget *mapDockWidget = new QDockWidget("MAP");
         mapDockWidget->setWidget(scrollArea);
 
-        addDockWidget(Qt::TopDockWidgetArea, mapDockWidget);
+        addDockWidget(Qt::LeftDockWidgetArea, mapDockWidget);
+
+        connect(dockWidgetLayers, SIGNAL(repaintMap()), mapWidget, SLOT(repaint()));
     }
 }
 

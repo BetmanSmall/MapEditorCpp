@@ -43,6 +43,7 @@ public:
     ~MapWidgetGL();
     Map *map;
     Camera camera;
+    Tile* selectedTile;
 
     bool isDrawableTerrain = true;
     bool isDrawableGrid = true;
@@ -61,4 +62,7 @@ protected:
 //    void initializeGL();
 //    void resizeGL(int w, int h);
 //    void paintGL();
+
+public slots:
+    void setSelectedTile(Tile* tile);
 };

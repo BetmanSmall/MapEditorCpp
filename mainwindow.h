@@ -19,6 +19,7 @@
 #include "mydockwidget.h"
 #include "mapwidgetgl.h"
 //#include "layer.h"
+#include "dockwidgetlayers.h"
 
 namespace Ui {
 class MainWindow;

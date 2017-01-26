@@ -25,7 +25,7 @@ public:
     int getIndex(Layer *layer);
 
     /** @return number of layers in the collection */
-    int getCount();
+    int size();
 
     /** @param layer layer to be added to the set */
     void add(Layer *layer);

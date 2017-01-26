@@ -37,34 +37,35 @@ void MapWidgetGL::drawTerrain() {
     int fieldY = map->height;
 
     MapLayers *mapLayer = map->getMapLayers();
-    for (int l = 0; l < mapLayer->getCount(); l++) {
+    for (int l = 0; l < mapLayer->size(); l++) {
         Layer *layer = mapLayer->get(l);
-
-        int isometricSpaceX = (sizeCellX/2) * fieldY;
-        int isometricSpaceY = 0;
-        for(int y = 0; y < fieldY; y++) {
-            for(int x = 0; x < fieldX; x++) {
-                Cell *cell = layer->getCell(x, y);
-                if(cell != NULL) {
-                    Tile *tile = cell->getTile();
-                    if(tile != NULL) {
-                        QPixmap pix = QPixmap(tile->getPixmap());
-                        if(!pix.isNull()) {
-                            int pixWidth = pix.width();
-                            int pixHeight = pix.height();
-                            int drawX = mainCoorMapX + isometricSpaceX - (sizeCellX/2) + x*halfSizeCellX;
-                            int drawY = mainCoorMapY + isometricSpaceY - (sizeCellY) + x*halfSizeCellY;
-                            camera.p.drawPixmap(drawX, drawY, sizeCellX, sizeCellY*2, pix);
+        if(layer->isVisible() && layer->getOpacity() != 0) {
+            int isometricSpaceX = (sizeCellX/2) * fieldY;
+            int isometricSpaceY = 0;
+            for(int y = 0; y < fieldY; y++) {
+                for(int x = 0; x < fieldX; x++) {
+                    Cell *cell = layer->getCell(x, y);
+                    if(cell != NULL) {
+                        Tile *tile = cell->getTile();
+                        if(tile != NULL) {
+                            QPixmap pix = QPixmap(tile->getPixmap());
+                            if(!pix.isNull()) {
+                                int pixWidth = pix.width();
+                                int pixHeight = pix.height();
+                                int drawX = mainCoorMapX + isometricSpaceX - (sizeCellX/2) + x*halfSizeCellX;
+                                int drawY = mainCoorMapY + isometricSpaceY - (sizeCellY) + x*halfSizeCellY;
+                                camera.p.drawPixmap(drawX, drawY, sizeCellX, sizeCellY*2, pix);
+                            }
+                        } else {
+    //                        qDebug() << "MapWidgetGL::drawTerrain(); -- Not Tile in Cell(" << x << "," << y << ")";
                         }
                     } else {
-//                        qDebug() << "MapWidgetGL::drawTerrain(); -- Not Tile in Cell(" << x << "," << y << ")";
+    //                    qDebug() << "MapWidgetGL::drawTerrain(); -- Bad Cell(" << x << "," << y << ")";
                     }
-                } else {
-//                    qDebug() << "MapWidgetGL::drawTerrain(); -- Bad Cell(" << x << "," << y << ")";
                 }
+                isometricSpaceX -= halfSizeCellX;
+                isometricSpaceY += halfSizeCellY;
             }
-            isometricSpaceX -= halfSizeCellX;
-            isometricSpaceY += halfSizeCellY;
         }
     }
 }
@@ -155,8 +156,11 @@ bool MapWidgetGL::whichCell(int &mouseX, int &mouseY) {
             return true;
         }
     }
-
     return false;
+}
+
+void MapWidgetGL::setSelectedTile(Tile *tile) {
+    this->selectedTile = tile;
 }
 
 //void MapWidgetGL::wheelEvent(QWheelEvent *event) {
