@@ -15,12 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena4.tmx");
     if(map != NULL) {
         TileSets *tileSets = map->getTileSets();
-        MyDockWidget *tileSetsDockWidget = new MyDockWidget("Наборы тайлов - TTW Map Editor");
-        for(int ts = 0; ts < tileSets->tileSets.size(); ts++) {
-            TileSet *tileSet = tileSets->getTileSet(ts);
-            tileSetsDockWidget->addTileSet(tileSet);
-        }
-        addDockWidget(Qt::RightDockWidgetArea, tileSetsDockWidget);
+        DockWidgetTileSets *dockWidgetTileSets = new DockWidgetTileSets(tileSets, this);
+        addDockWidget(Qt::RightDockWidgetArea, dockWidgetTileSets);
 
         mapLayers = map->getMapLayers();
         DockWidgetLayers* dockWidgetLayers = new DockWidgetLayers(mapLayers, this);
@@ -36,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent) :
         addDockWidget(Qt::LeftDockWidgetArea, mapDockWidget);
 
         connect(dockWidgetLayers, SIGNAL(repaintMap()), mapWidget, SLOT(repaint()));
+        connect(dockWidgetLayers, SIGNAL(layerSelected(int)), mapWidget, SLOT(setSelectedLayer(int)));
+        connect(dockWidgetTileSets, SIGNAL(tileSelected(Tile*)), mapWidget, SLOT(setSelectedTile(Tile*)));
     }
 }
 

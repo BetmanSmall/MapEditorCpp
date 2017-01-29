@@ -1,20 +1,23 @@
-#ifndef MYDOCKWIDGET_H
-#define MYDOCKWIDGET_H
+#ifndef DOCKWIDGETTILESETS_H
+#define DOCKWIDGETTILESETS_H
 
 #include <QDockWidget>
 #include <QTabWidget>
 #include <QScrollArea>
 #include <QVBoxLayout>
 
+#include "tilesets.h"
 #include "tileset.h"
 #include "tilesetwidget.h"
 
-class MyDockWidget : public QDockWidget {
-    QVBoxLayout *layout;
+class DockWidgetTileSets : public QDockWidget {
+    Q_OBJECT
+    TileSets* tileSets;
     QTabWidget *tabWidget;
+//    QVBoxLayout *layout;
 public:
-    MyDockWidget(QString title, QWidget* parent);
-    void addTileSet(TileSet *tileSet);
+    DockWidgetTileSets(TileSets* tileSets, QWidget* parent);
+//    void addTileSet(TileSet *tileSet);
 
     void wheelEvent(QWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
@@ -22,10 +25,10 @@ public:
     void mousePressEvent(QMouseEvent *event);
 
 signals:
-    void tileSelected1(Tile* tile);
+    void tileSelected(Tile* tile);
 
 public slots:
     void tileSelectedSlot(Tile* tile);
 };
 
-#endif // MYDOCKWIDGET_H
+#endif // DOCKWIDGETTILESETS_H

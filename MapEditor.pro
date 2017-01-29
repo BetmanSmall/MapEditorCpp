@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     cell.cpp \
     maplayers.cpp \
     mapwidgetgl.cpp \
-    dockwidgetlayers.cpp
+    dockwidgetlayers.cpp \
+    dockwidgettilesets.cpp
 
 HEADERS  += mainwindow.h \
     map.h \
@@ -46,6 +47,7 @@ HEADERS  += mainwindow.h \
     cell.h \
     maplayers.h \
     mapwidgetgl.h \
-    dockwidgetlayers.h
+    dockwidgetlayers.h \
+    dockwidgettilesets.h
 
 FORMS    += mainwindow.ui

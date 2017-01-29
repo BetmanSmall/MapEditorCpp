@@ -116,7 +116,7 @@ void MapWidgetGL::drawGrid() {
 void MapWidgetGL::mousePressEvent(QMouseEvent *event) {
     int x = event->x();
     int y = event->y();
-    qDebug() << "MapWidgetGL::mousePressEvent(" << event << "); -- x:" << x << " y:" << y;
+    qDebug() << "MapWidgetGL::mousePressEvent(); -- x:" << x << " y:" << y;
     int mouseX = x;
     int mouseY = y;
     whichCell(mouseX, mouseY);
@@ -153,6 +153,8 @@ bool MapWidgetGL::whichCell(int &mouseX, int &mouseY) {
             mouseX = gameX-1;
             mouseY = gameY-1;
             qDebug() << "MapWidgetGL::whichCell(5); - mouseX:" << mouseX << ", mouseY:" << mouseY;
+            map->getMapLayers()->get(map->getMapLayers()->size()-selectedLayer-1)->getCell(mouseX, mouseY)->setTile(selectedTile);
+            repaint();
             return true;
         }
     }
@@ -160,7 +162,13 @@ bool MapWidgetGL::whichCell(int &mouseX, int &mouseY) {
 }
 
 void MapWidgetGL::setSelectedTile(Tile *tile) {
+    qDebug() << "MapWidgetGL::setSelectedTile(" << tile << ");";
     this->selectedTile = tile;
+}
+
+void MapWidgetGL::setSelectedLayer(int layerIndex) {
+    qDebug() << "MapWidgetGL::setSelectedLayer(" << layerIndex << ");";
+    this->selectedLayer = layerIndex;
 }
 
 //void MapWidgetGL::wheelEvent(QWheelEvent *event) {

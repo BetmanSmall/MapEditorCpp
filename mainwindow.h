@@ -16,7 +16,7 @@
 #include "tilesets.h"
 #include "tileset.h"
 #include "tilesetwidget.h"
-#include "mydockwidget.h"
+#include "dockwidgettilesets.h"
 #include "mapwidgetgl.h"
 //#include "layer.h"
 #include "dockwidgetlayers.h"

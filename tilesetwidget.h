@@ -36,9 +36,9 @@ public:
 //    void keyPress(QKeyEvent *event);
 //    void keyRelease(QKeyEvent *event);
     void mousePressEvent(QMouseEvent *event);
-signals:
 
-public slots:
+signals:
+    void tileSelected(Tile* tile);
 };
 
 #endif // TILESSETWIDGET_H

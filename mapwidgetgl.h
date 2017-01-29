@@ -38,12 +38,14 @@ public:
 
 //class MapWidgetGL : public QOpenGLWidget, public QDockWidget {
 class MapWidgetGL : public QWidget {
+    Q_OBJECT
 public:
     MapWidgetGL(Map *map, QWidget *parent = 0);
     ~MapWidgetGL();
     Map *map;
     Camera camera;
     Tile* selectedTile;
+    int selectedLayer;
 
     bool isDrawableTerrain = true;
     bool isDrawableGrid = true;
@@ -65,4 +67,5 @@ protected:
 
 public slots:
     void setSelectedTile(Tile* tile);
+    void setSelectedLayer(int layerIndex);
 };

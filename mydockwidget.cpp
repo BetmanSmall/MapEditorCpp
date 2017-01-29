@@ -1,6 +1,6 @@
 #include "mydockwidget.h"
 
-MyDockWidget::MyDockWidget(QString title) : QDockWidget(title){
+MyDockWidget::MyDockWidget(QString title, QWidget* parent) : QDockWidget(title, parent) {
     tabWidget = new QTabWidget();
     setWidget(tabWidget);
 }
@@ -11,6 +11,7 @@ void MyDockWidget::addTileSet(TileSet *tileSet) {
     TileSetWidget *tilesSetWidget = new TileSetWidget(this, tileSet);
     scrollArea->setWidget(tilesSetWidget);
     tabWidget->addTab(scrollArea, tilesSetWidget->getTileSetName());
+    connect(tilesSetWidget, SIGNAL(tileSelected(Tile*)), this, SLOT(tileSelectedSlot(Tile*)));
 }
 
 void MyDockWidget::wheelEvent(QWheelEvent *event) {
@@ -33,4 +34,9 @@ void MyDockWidget::mousePressEvent(QMouseEvent *event) {
     int x = event->x();
     int y = event->y();
     qDebug() << "MyDockWidget::mousePressEvent(" << event << "); -- x:" << x << " y:" << y;
+}
+
+void MyDockWidget::tileSelectedSlot(Tile *tile) {
+    qDebug() << "MyDockWidget::tileSelected();";
+//    tileSelected1(tile);
 }

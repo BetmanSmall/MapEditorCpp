@@ -14,6 +14,7 @@ public:
     TileSet *getTileSet(int index);
     QList<TileSet> getTileSets();
     Tile *getTile(int id);
+    int size();
 };
 
 #endif // TILESETS_H

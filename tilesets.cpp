@@ -38,3 +38,7 @@ Tile *TileSets::getTile(int id) {
     }
     return NULL;
 }
+
+int TileSets::size() {
+    return tileSets.size();
+}

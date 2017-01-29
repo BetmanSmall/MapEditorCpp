@@ -113,6 +113,8 @@ void TileSetWidget::mousePressEvent(QMouseEvent *event) {
     int tileX = mouseX/(tileWidht*scale);
     int tileY = mouseY/(tileHeight*scale);
     this->selectedTile->setRect(tileX*(tileWidht*scale), tileY*(tileHeight*scale), tileWidht*scale, tileHeight*scale);
-    qDebug() << "TileSetWidget::mousePressEvent(" << event << "); -- mouseX:" << mouseX << " mouseY:" << mouseY << " tileX:" << tileX << " tileY:" << tileY;
+    Tile* tile = tileSet->getLocalTile( (tileY*columns + tileX) + 1);
+    qDebug() << "TileSetWidget::mousePressEvent(); -- mX:" << mouseX << " mY:" << mouseY << " tX:" << tileX << " tY:" << tileY << " tId:" << tile->getId() << ":" << tileY*columns + tileX;
+    emit tileSelected(tile);
     repaint();
 }

@@ -24,6 +24,7 @@ private slots:
 
 signals:
     void repaintMap();
+    void layerSelected(int layerIndex);
 };
 
 #endif // DOCKWIDGETLAYERS_H

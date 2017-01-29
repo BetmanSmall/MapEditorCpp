@@ -27,7 +27,8 @@ DockWidgetLayers::DockWidgetLayers(MapLayers* mapLayers, QWidget* parent) : QDoc
 }
 
 void DockWidgetLayers::currentRowChanged(int currentRow) {
-    qDebug() << "DockWidgetLayers::currentRowChanged();";
+    qDebug() << "DockWidgetLayers::currentRowChanged(" << currentRow << ");";
+    emit layerSelected(currentRow);
 }
 
 void DockWidgetLayers::itemChanged(QListWidgetItem *item) {
