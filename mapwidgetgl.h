@@ -46,6 +46,7 @@ public:
     Camera camera;
     Tile* selectedTile;
     int selectedLayer;
+    boolean mousePressed = false;
 
     bool isDrawableTerrain = true;
     bool isDrawableGrid = true;
@@ -58,6 +59,8 @@ protected:
     void drawGrid();
     void drawTerrain();
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
     bool whichCell(int &mouseX, int &mouseY);
 //    void wheelEvent(QWheelEvent *event);
 //    void keyPress(QKeyEvent *event);

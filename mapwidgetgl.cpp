@@ -117,9 +117,25 @@ void MapWidgetGL::mousePressEvent(QMouseEvent *event) {
     int x = event->x();
     int y = event->y();
     qDebug() << "MapWidgetGL::mousePressEvent(); -- x:" << x << " y:" << y;
-    int mouseX = x;
-    int mouseY = y;
-    whichCell(mouseX, mouseY);
+    mousePressed = true;
+}
+
+void MapWidgetGL::mouseReleaseEvent(QMouseEvent *event) {
+    int x = event->x();
+    int y = event->y();
+    qDebug() << "MapWidgetGL::mouseReleaseEvent(); -- x:" << x << " y:" << y;
+    mousePressed = false;
+}
+
+void MapWidgetGL::mouseMoveEvent(QMouseEvent *event) {
+    int x = event->x();
+    int y = event->y();
+    qDebug() << "MapWidgetGL::mouseMoveEvent(); -- x:" << x << " y:" << y;
+    if(mousePressed) {
+        int mouseX = x;
+        int mouseY = y;
+        whichCell(mouseX, mouseY);
+    }
 }
 
 bool MapWidgetGL::whichCell(int &mouseX, int &mouseY) {

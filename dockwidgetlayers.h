@@ -3,8 +3,10 @@
 
 #include <QDebug>
 #include <QDockWidget>
-#include <QGridLayout>
+#include <QLayout>
+#include <QGroupBox>
 #include <QListWidget>
+#include <QPushButton>
 
 #include "maplayers.h"
 #include "layer.h"
@@ -21,6 +23,10 @@ private slots:
     void itemChanged(QListWidgetItem* item);
     void itemDoubleClicked(QListWidgetItem* item);
     void itemPressed(QListWidgetItem* item);
+    void addEmptyLayer();
+    void delSelectedLayer();
+    void upLayer();
+    void downLayer();
 
 signals:
     void repaintMap();

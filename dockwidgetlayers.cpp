@@ -5,10 +5,7 @@ DockWidgetLayers::DockWidgetLayers(MapLayers* mapLayers, QWidget* parent) : QDoc
 //    addDockWidget(Qt::LeftDockWidgetArea, dock);
 //    setFeatures(QDockWidget::NoDockWidgetFeatures); // thus blocking dock widget area
     this->mapLayers = mapLayers;
-    this->listWidget = new QListWidget(this);
-    setWidget(listWidget);
-//    listWidget->setSizeAdjustPolicy(QListWidget::AdjustToContents);
-//    listWidget->resize(300, 300);
+    this->listWidget = new QListWidget();
     for(int l = mapLayers->size()-1; l >= 0; l--) {
         Layer* layer = mapLayers->get(l);
         QString name = layer->getName();
@@ -24,6 +21,28 @@ DockWidgetLayers::DockWidgetLayers(MapLayers* mapLayers, QWidget* parent) : QDoc
     connect(listWidget, SIGNAL(itemChanged(QListWidgetItem*)), this, SLOT(itemChanged(QListWidgetItem*)));
     connect(listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(itemDoubleClicked(QListWidgetItem*)));
     connect(listWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(itemPressed(QListWidgetItem*)));
+
+    QPushButton* addButton = new QPushButton("+");
+    connect(addButton, SIGNAL(pressed()), this, SLOT(addEmptyLayer()));
+    QPushButton* delButton = new QPushButton("-");
+    connect(delButton, SIGNAL(pressed()), this, SLOT(delSelectedLayer()));
+    QPushButton* upButton = new QPushButton("Up");
+    connect(upButton, SIGNAL(pressed()), this, SLOT(upLayer()));
+    QPushButton* downButton = new QPushButton("Down");
+    connect(downButton, SIGNAL(pressed()), this, SLOT(downLayer()));
+
+    QBoxLayout* mainLayout = new QVBoxLayout;
+    QBoxLayout* buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addWidget(addButton);
+    buttonsLayout->addWidget(delButton);
+    buttonsLayout->addWidget(upButton);
+    buttonsLayout->addWidget(downButton);
+    mainLayout->addWidget(listWidget);
+    mainLayout->addLayout(buttonsLayout);
+
+    QGroupBox* groupBox = new QGroupBox;
+    groupBox->setLayout(mainLayout);
+    setWidget(groupBox);
 }
 
 void DockWidgetLayers::currentRowChanged(int currentRow) {
@@ -46,4 +65,21 @@ void DockWidgetLayers::itemDoubleClicked(QListWidgetItem* item) {
 
 void DockWidgetLayers::itemPressed(QListWidgetItem *item) {
     qDebug() << "DockWidgetLayers::itemPressed();";
+}
+
+void DockWidgetLayers::addEmptyLayer() {
+    qDebug() << "DockWidgetLayers::addEmptyLayer();";
+//    mapLayers->add(new Layer());
+}
+
+void DockWidgetLayers::delSelectedLayer() {
+    qDebug() << "DockWidgetLayers::delSelectedLayer();";
+}
+
+void DockWidgetLayers::upLayer() {
+    qDebug() << "DockWidgetLayers::upLayer();";
+}
+
+void DockWidgetLayers::downLayer() {
+    qDebug() << "DockWidgetLayers::downLayer();";
 }
