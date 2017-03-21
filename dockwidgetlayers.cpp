@@ -1,10 +1,11 @@
 #include "dockwidgetlayers.h"
 
-DockWidgetLayers::DockWidgetLayers(MapLayers* mapLayers, QWidget* parent) : QDockWidget("Layers", parent) {
+DockWidgetLayers::DockWidgetLayers(Map *map, QWidget* parent) : QDockWidget("Layers", parent) {
 //    setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 //    addDockWidget(Qt::LeftDockWidgetArea, dock);
 //    setFeatures(QDockWidget::NoDockWidgetFeatures); // thus blocking dock widget area
-    this->mapLayers = mapLayers;
+    this->map = map;
+    this->mapLayers = map->getMapLayers();
     this->listWidget = new QListWidget();
     for(int l = mapLayers->size()-1; l >= 0; l--) {
         Layer* layer = mapLayers->get(l);
@@ -69,7 +70,13 @@ void DockWidgetLayers::itemPressed(QListWidgetItem *item) {
 
 void DockWidgetLayers::addEmptyLayer() {
     qDebug() << "DockWidgetLayers::addEmptyLayer();";
-//    mapLayers->add(new Layer());
+    Layer* layer = map->addNewLayer();
+    QListWidgetItem* item = new QListWidgetItem("New Layer " + QString::number(mapLayers->size()-1), listWidget);
+    item->setData(Qt::UserRole, QString("%1").arg(mapLayers->size()-1));
+    item->setCheckState(Qt::Unchecked);
+    if(layer->isVisible() && layer->getOpacity() != 0) {
+        item->setCheckState(Qt::Checked);
+    }
 }
 
 void DockWidgetLayers::delSelectedLayer() {

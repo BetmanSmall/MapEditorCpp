@@ -12,14 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionLoadMap, SIGNAL(triggered(bool)), this, SLOT(loadMap()));
 
     MapLoader *mapLoader = new MapLoader();
-    this->map = mapLoader->load("C:/QtProjects/MapEditor/maps/arena4.tmx");
+    this->map = mapLoader->load("C:/Qt/QtProjects/MapEditorCpp/maps/arena4.tmx");
     if(map != NULL) {
         TileSets *tileSets = map->getTileSets();
         DockWidgetTileSets *dockWidgetTileSets = new DockWidgetTileSets(tileSets, this);
         addDockWidget(Qt::RightDockWidgetArea, dockWidgetTileSets);
 
-        mapLayers = map->getMapLayers();
-        DockWidgetLayers* dockWidgetLayers = new DockWidgetLayers(mapLayers, this);
+        DockWidgetLayers* dockWidgetLayers = new DockWidgetLayers(map, this);
         addDockWidget(Qt::RightDockWidgetArea, dockWidgetLayers);
 
         QScrollArea *scrollArea = new QScrollArea();

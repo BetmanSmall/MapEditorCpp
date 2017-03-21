@@ -15,7 +15,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     map.cpp \
     tile.cpp \
-#    layer.cpp \
     maploader.cpp \
     tileset_back.cpp \
     tilesets.cpp \
@@ -34,7 +33,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     map.h \
     tile.h \
-#    layer.h \
     maploader.h \
     tileset_back.h \
     tilesets.h \

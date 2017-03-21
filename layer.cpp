@@ -64,7 +64,7 @@ Cell *Layer::getCell(int x, int y) {
     return &(cells[y*width+x]);
 }
 
-void Layer::setCell (int x, int y, Cell cell) {
+void Layer::setCell(int x, int y, Cell cell) {
     if (x < 0 || x >= width) return;
     if (y < 0 || y >= height) return;
     cells[y*width+x] = cell;

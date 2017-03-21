@@ -16,11 +16,10 @@ public:
 
 public:
     Map();
+    Layer* addNewLayer();
     QMap<QString, QString> *getProperties();
     TileSets *getTileSets();
     MapLayers *getMapLayers();
-//    void loadMap(QString fileName);
-//    QString findFile(QString filePath);
     void turnRight();
     void turnLeft();
     void flipX();

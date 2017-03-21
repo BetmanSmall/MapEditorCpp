@@ -8,15 +8,17 @@
 #include <QListWidget>
 #include <QPushButton>
 
+#include "map.h"
 #include "maplayers.h"
 #include "layer.h"
 
 class DockWidgetLayers : public QDockWidget {
     Q_OBJECT
-    QListWidget* listWidget;
+    Map* map;
     MapLayers* mapLayers;
+    QListWidget* listWidget;
 public:
-    explicit DockWidgetLayers(MapLayers* mapLayers, QWidget *parent);
+    explicit DockWidgetLayers(Map* map, QWidget *parent);
 
 private slots:
     void currentRowChanged(int currentRow);
